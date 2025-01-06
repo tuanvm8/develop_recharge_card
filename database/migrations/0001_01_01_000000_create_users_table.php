@@ -15,27 +15,27 @@ return new class extends Migration
     {
         Schema::create('m_user', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->string('phone', 10)->nullable();
-            $table->unsignedTinyInteger('status')->default(1);
-            $table->unsignedInteger('point')->default(0);
-            $table->unsignedTinyInteger('role')->default(2);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username')->index();
+            $table->string('email')->unique()->index();
+            $table->string('phone', 10)->nullable()->index();;
+            $table->unsignedTinyInteger('status')->default(1)->index();
+            $table->unsignedInteger('point')->default(0)->index();
+            $table->unsignedTinyInteger('role')->default(2)->index();
+            $table->timestamp('email_verified_at')->nullable()->index();
             $table->string('password');
-            $table->string('forgot_url')->nullable();
+            $table->string('forgot_url')->nullable()->index();;
             $table->rememberToken();
             $table->timestamps();
         });
 
         DB::table('m_user')->insert([
             'id' => 1,
-            'username' => env('ADMIN_USERNAME'),
-            'email' => env('ADMIN_EMAIL'),
-            'phone' => env('ADMIN_PHONE'),
+            'username' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'phone' => '0123456789',
             'status' => 1,
             'role' => 1,
-            'password' => Hash::make(env('ADMIN_PASSWORD')),
+            'password' => Hash::make('recharge@1234'),
         ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

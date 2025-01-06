@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('withdraw_money', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();   
-            $table->string('content')->index();
-            $table->integer('status')->default(1)->index(); 
-            $table->decimal('total', 10, 2)->index();  // TỔng tiền
+            $table->string('title');
+            $table->string('image');
+            $table->longText('content');
+            $table->unsignedBigInteger('category_id'); 
+            $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('posts');
     }
 };

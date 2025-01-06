@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
               <a href="#" class="text-decoration-none">Trang chủ </a> 
             </li>
-            <li class="breadcrumb-item active">Danh mục rút tiền </li>
+            <li class="breadcrumb-item active">Danh mục thanh toán </li>
           </ol>
         </div>
       </div>
@@ -19,7 +19,7 @@
     @include('admin.core.alert')
     <div class="d-flex justify-content-between mb-3">
         <h1 class="fs-3 m-0">
-            Danh sách rút tiền
+            Danh sách thanh toán
         </h1>
     </div>
 
@@ -28,12 +28,12 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" class="text-center" width="5%">#</th>
-                    <th scope="col" class="text-center" width="10%">Tên</th>
-                    <th scope="col" class="text-center" width="10%">Ngân hàng</th>
-                    <th scope="col" class="text-center" width="20%">Số tiền</th>
-                    <th scope="col" class="text-center" width="15%">Số tài khoản</th>
-                    <th scope="col" class="text-center" width="30%">Chi nhánh</th>
-                    <th scope="col" class="text-center" width="30%">Người giới thiệu</th>
+                    <th scope="col" class="text-center" width="10%">Loại thẻ</th>
+                    <th scope="col" class="text-center" width="10%">Mệnh giá</th>
+                    <th scope="col" class="text-center" width="20%">Số lượng</th>
+                    <th scope="col" class="text-center" width="15%">Phí giao dịch</th>
+                    <th scope="col" class="text-center" width="30%">Giảm giá</th>
+                    <th scope="col" class="text-center" width="30%">Tổng tiền</th>
                 </tr>
             </thead>
             <tbody>
