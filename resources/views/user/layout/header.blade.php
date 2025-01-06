@@ -31,7 +31,7 @@
         </div>
 
         <div class="collapse navbar-collapse d-sm-block d-none" id="collapsibleNavId">
-            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+            {{-- <ul class="navbar-nav me-auto mt-2 mt-lg-0">
                 <li><a class="nav-link" href="{{ route('home') }}">Trang chủ</a></li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('introduction') }}">Giới thiệu</a>
@@ -53,7 +53,7 @@
                         <a class="nav-link" href="{{ route('logout') }}"> Đăng xuất </a>
                     </li>
                 @endif
-            </ul>
+            </ul> --}}
             @if (Auth::check())
                 <a class="btn btn-dangky nav-link d-none d-md-block">
                     <i class="fa-solid fa-user" style="color: #ffffff;"></i> {{ Auth::user()->username }}

@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  User::where('role', 2)->orderBy('username', 'asc')->get();
+        $users = DB::select('SELECT * FROM m_user WHERE role = ? ORDER BY username ASC', [2]);
         return view('admin.user.list', ['users' => $users]);
     }
 

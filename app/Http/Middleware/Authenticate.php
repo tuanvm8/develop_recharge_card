@@ -20,8 +20,8 @@ class Authenticate
         if (!Auth::guard('admin')->check()) return redirect()->route('admin.login')->with('messageError', 'Bạn cần đăng nhập để có thể thực hiện thao tác.');
         if (Auth::guard('admin')->user()->status == 2){
             Auth::logout();
-            return redirect()->route('admin.login')->with('messageError', 'Tài khoản của bạn đã bị vô hiệu hóa.');;
-        } 
+            return redirect()->route('admin.login')->with('messageError', 'Tài khoản của bạn đã bị vô hiệu hóa.');
+        }
         return $next($request);
     }
 }

@@ -11,7 +11,7 @@ use App\Http\Controllers\User\WithdrawMoneyController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'login-ytb-admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'recharge-card-admin', 'as' => 'admin.'], function () {
 
     Route::get('login', [DashboardController::class, 'getLogin'])->name('login');
     Route::post('login', [DashboardController::class, 'postLogin']);
