@@ -6,41 +6,40 @@
                 <div class="col-lg-6 col-md-7 col-sm-2">
                     <div class="box-login" style="box-shadow: 1px 1px 10px 1px #cccc;border-radius: 30px;">
                         <div class=" text-center">
-                            <img src="{{ asset('images/image-login.png') }}" alt=""
-                                style="height: 180px;object-fit: contain;margin-bottom: 30px;" />
+                            <img src="{{ asset('asset/images/logo_napluon.png') }}" alt=""
+                            style="height: 135px; width: 54%; object-fit: contain;"/>
                         </div>
 
                         @include('admin.core.alert')
-                        <h1 class="title">Đăng ký tài khoản</h1>
-                        <p class="des">Thông tin đăng ký sẽ được xác nhận trước khi hoạt động bạn hãy kiểm tra email.</p>
+                        <h1 class="title mx-4">Đăng ký tài khoản</h1>
                         <form method="post" action="{{ route('register.post') }}" id="form-dangky">
                             @csrf
-                            <div class="mb-3">
+                            <div class="mb-3 mx-4">
                                 <label class="form-label">Họ và tên</label>
                                 <input type="text" class="form-control" required="" name="ho_ten"
                                     placeholder="Nhập họ tên" value="{{ old('ho_ten') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('ho_ten') }}</p>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 mx-4">
                                 <label class="form-label">Email</label>
                                 <input type="text" class="form-control" required="" name="email"
                                     placeholder="Nhập email" value="{{ old('email') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('email') }}</p>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 mx-4">
                                 <label class="form-label">Điện thoại</label>
                                 <input type="text" class="form-control" required="" name="dien_thoai"
                                     placeholder="Nhập số điện thoại" value="{{ old('dien_thoai') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('dien_thoai') }}
                                 </p>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 mx-4">
                                 <label class="form-label">Mật khẩu</label>
                                 <input required="" class="form-control" type="password" id="matkhau" name="mat_khau"
                                     placeholder="Nhập mật khẩu" value="{{ old('mat_khau') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('mat_khau') }}</p>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 mx-4">
                                 <label class="form-label">Xác nhận mật khẩu</label>
                                 <input required="" class="form-control" type="password" name="mat_khau2"
                                     placeholder="Nhập lại mật khẩu" value="{{ old('mat_khau2') }}">
@@ -49,9 +48,9 @@
                             </div>
                             <p class="help is-danger text-danger confirm_password">{{ $errors->first('msg') }}</p>
                             <div class="mb-3 text-center ">
-                                <button type="submit" class="btn btn-main">Đăng ký</button>
+                                <button type="submit" class="btn btn-main text-white" style="background: red;">Đăng ký</button>
                             </div>
-                            <p class="font-xs text-muted text-center">Đã đăng ký tài khoản trước đó <a
+                            <p class="font-xs text-muted text-center text-danger">Đã đăng ký tài khoản trước đó <a
                                     href="{{ route('login.index') }}">Đăng nhập</a></p>
                         </form>
                     </div>

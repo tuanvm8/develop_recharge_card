@@ -1,48 +1,138 @@
 <!DOCTYPE html>
-<html lang="vi">
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<html lang="en">
 
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('pageTitle')</title>
-    <meta name="keywords" content="kiemtienyotube.com" />
-    <meta name="description" content="kiemtienyotube.com" />
-    <link href="#" rel="canonical" />
-    <link href="{{ url('asset/images/banner-quang-cao-youtube-ads.png') }}" rel="shortcut icon" type="image/x-icon" />
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="kiemtienyotube.com">
-    <meta name="twitter:site" content="@https://nanaytb.com/">
-    <meta name="twitter:description" content="kiemtienyotube.com">
-    <meta name="twitter:image" content="asset/asset/images/banner-quang-cao-youtube-ads.png">
-    <meta name="twitter:image:alt" content="kiemtienyotube.com">
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="index.html" />
-    <meta property="og:title" content="kiemtienyotube.com" />
-    <meta property="og:image" content="asset/images/banner-quang-cao-youtube-ads.png" />
-    <meta property="og:description" content="kiemtienyotube.com" />
-    <meta property="fb:page_id" content="f.me/blogtino/" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <link rel="stylesheet" href="{{ asset('templates/css/swiper-bundle.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('templates/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('templates/css/styles.css') }}">
-    <!-- <script src="templates/js/jquery-3.6.4.min.js"></script> -->
-
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
-    <!-- Tải jQuery Validation Plugin -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js" type="text/javascript">
-    </script>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="icon" type="image/png" href="{{ url('/asset/images/logo_small.png') }}">
+    <title>Napluon</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <style>
-        .formattedNumber sup.currency-symbol {
-            font-size: 0.85em;
-            vertical-align: middle;
-            position: relative;
-            top: -0.2em;
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .provider img {
+            height: 40px;
+        }
+
+        .card-value {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .provider2.active {
+            border-color: #277de4;
+            color: #fff;
+            background-image: linear-gradient(90deg, #01b49b, #277de4) !important;
+        }
+
+        .provider.active {
+            border: 4px solid #277de4;
+            /* border-color: #277de4; */
+        }
+
+        .payment-method img {
+            height: 40px;
+        }
+
+        .footer {
+            background-color: #efefef;
+            padding: 20px 0;
+        }
+
+        .card {
+            border-radius: 3px;
+            border: 0;
+            background-color: #eee;
+            font-weight: 600;
+            font-size: larger;
+        }
+
+        .provider {
+            cursor: pointer;
+            width: 150px;
+            height: 80px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .provider2 {
+            cursor: pointer;
+            width: 150px;
+            height: 80px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .provider2 small {
+            border-top: 1px dotted #333;
+            padding-top: 8px;
+        }
+
+        .provider2 p {
+            margin-top: 8px;
+            font-weight: 600;
+            font-size: larger;
+        }
+
+        .provider img {
+            width: 100px;
+            height: auto;
+        }
+
+        .footer img {
+            height: 40px;
+        }
+
+        .footer p {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .nav-link {
+            color: #1976d2 !important;
+        }
+
+        .nav-item .nav-link.active {
+            background-color: #c7e3ff;
+            color: #fff;
+            border-radius: 0.25rem;
+        }
+
+        .nav-item .nav-link {
+            transition: background-color 0.3s, color 0.3s;
+            /* Hiệu ứng mượt */
+        }
+
+        .nav-item {
+            border-right: 1px solid #1976d2;
         }
     </style>
 </head>
@@ -52,26 +142,38 @@
     @include('user.layout.header')
     @yield('templateContent')
     @include('user.layout.footer')
-
+    {{-- 
     <link rel="stylesheet" href="{{ asset('templates/css/all.min.css') }}">
     <script type="module" crossorigin src="{{ asset('templates/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('templates/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('templates/js/index.js') }}"></script>
-    <script src="{{ asset('templates/js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('templates/js/sweetalert.min.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // active Menu
         document.addEventListener("DOMContentLoaded", function() {
-            var elements = document.querySelectorAll('.formattedNumber');
+            const navLinks = document.querySelectorAll(".nav-item .nav-link");
 
-            elements.forEach(function(element) {
-                var number = parseInt(element.textContent, 10);
-                var formattedNumber = number.toLocaleString('vi-VN');
+            navLinks.forEach((link) => {
+                link.addEventListener("click", function(event) {
+                    navLinks.forEach((nav) => nav.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+        });
 
-                // Tạo HTML cho số và chữ đ
-                element.innerHTML = `${formattedNumber}<sup style='text-transform: lowercase;'>đ</sup>`;
+        // active Chọn nhà cung cấp
+        document.addEventListener("DOMContentLoaded", () => {
+            const providers = document.querySelectorAll(".provider");
+
+            providers.forEach((provider) => {
+                provider.addEventListener("click", () => {
+                    providers.forEach((el) => el.classList.remove("active"));
+                    provider.classList.add("active");
+                });
             });
         });
     </script>
-
 </body>
 
 </html>

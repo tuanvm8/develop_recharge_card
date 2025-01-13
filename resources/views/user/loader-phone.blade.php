@@ -1,0 +1,270 @@
+@extends('user.main')
+@section('pageTitle', 'Trang chủ')
+@section('templateContent')
+<div class="col-12 my-4">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" style="height: 300px"
+                    src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
+                    alt="First slide" />
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h5 class="card p-3">Chọn nhà cung cấp</h5>
+                <div class="d-flex flex-wrap p-2" id="provider-container">
+                    <div class="provider me-3 mb-3" data-provider="vina">
+                        <img alt="Vina" src="{{ asset('asset/images/VINAPHONE_01.jpg') }}" />
+                    </div>
+                    <div class="provider me-3 mb-3" data-provider="viettel">
+                        <img alt="Viettel" src="{{ asset('asset/images/VIETTEL_01.png') }}" />
+                    </div>
+                    <div class="provider me-3 mb-3" data-provider="mobile">
+                        <img alt="Mobile" src="{{ asset('asset/images/MOBIFONE_01.png') }}" />
+                    </div>
+                </div>
+                <h5 class="card p-3">Chọn mệnh giá</h5>
+                <div class="d-flex flex-wrap p-2" id="provider2-container">
+                    <div class="w-100 text-center p-3">
+                        <p style="font-size: 1.2em; color: #ff0000">
+                            Hãy chọn nhà cung cấp
+                        </p>
+                    </div>
+                </div>
+
+                <h5 class="card p-3">Thông tin nạp</h5>
+                <div class="p-3">
+                    <p class="fw-semibold">
+                        Số điện thoại nạp (Vui lòng nhập số điện thoại 10 số, bắt đầu từ
+                        số 0, ví dụ: 09...) *
+                    </p>
+                    <input id="phone-input" class="form-control" placeholder="Vui lòng nhập số điện thoại" type="number"
+                        style="height: 60px" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{-- <h2 class="fw-semibold">Thanh toán</h2>
+                <h5 class="card fw-normal p-2">Hình thức thanh toàn</h5> --}}
+                {{-- <div class="payment-method mb-3">
+                    <div class="row p-2">
+                        <div class="col-4">
+                            <img alt="VNPay logo" src="/image/vnpay-qrcode-1.png" width="120" />
+                        </div>
+                        <div class="col-4">
+                            <p class="fw-normal fs-6">Thanh toán quét mã VNPAYQR</p>
+                        </div>
+                        <div class="col-4">
+                            <a class="text-decoration-none" href="#"> Thay đổi </a>
+                        </div>
+                    </div>
+                </div> --}}
+                <h5 class="card fw-normal p-2">Chi tiết giao dịch</h5>
+                <p class="text-danger p-2">
+                    Quý khách kiểm tra và cảnh giác không thanh toán hộ, hoặc cung cấp
+                    thông tin cho người lạ trước khi thanh toán
+                </p>
+                <ul class="list-unstyled p-2">
+                    <li class="border-bottom border-secondary pb-2 pt-2">
+                        Hình thức nạp:
+                        <span class="float-end text-danger"> </span>
+                    </li>
+                    <li class="border-bottom border-secondary pb-2 pt-2">
+                        Mệnh giá:
+                        <span class="float-end text-danger"></span>
+                    </li>
+                    <li class="border-bottom border-secondary pb-2 pt-2">
+                        Số điện thoại nạp:
+                        <span class="float-end text-danger"> </span>
+                    </li>
+                    <li class="border-bottom border-secondary pb-2 pt-2">
+                        Phí giao dịch:
+                        <span class="float-end text-danger"></span>
+                    </li>
+                    <li class="border-bottom border-secondary pb-2 pt-2">
+                        Giảm giá:
+                        <span class="float-end text-danger"> </span>
+                    </li>
+                    <li class="fw-bold">
+                        Tổng tiền:
+                        <span class="float-end text-danger" style="font-size: xx-large"></span>
+                    </li>
+                </ul>
+                <button class="btn btn-primary w-100"
+                    style="
+            background-image: linear-gradient(
+              90deg,
+              #01b49b,
+              #277de4
+            ) !important;
+          ">
+                    Thanh Toán
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Giá cho từng loại thẻ
+        document.addEventListener("DOMContentLoaded", () => {
+            const providers = document.querySelectorAll(".provider");
+            const provider2Container = document.getElementById(
+                "provider2-container"
+            );
+            const infoList = document.querySelector(".list-unstyled");
+            const defaultContent = provider2Container.innerHTML;
+
+            const data = {
+                vina: [{
+                        value: "100.000đ",
+                        price: "99.000đ"
+                    },
+                    {
+                        value: "200.000đ",
+                        price: "198.000đ"
+                    },
+                    {
+                        value: "300.000đ",
+                        price: "297.000đ"
+                    },
+                    {
+                        value: "500.000đ",
+                        price: "495.000đ"
+                    },
+                ],
+                viettel: [{
+                    value: "50.000đ",
+                    price: "49.500đ"
+                }],
+                mobile: [{
+                        value: "100.000đ",
+                        price: "99.000đ"
+                    },
+                    {
+                        value: "200.000đ",
+                        price: "198.000đ"
+                    },
+                    {
+                        value: "300.000đ",
+                        price: "297.000đ"
+                    },
+                    {
+                        value: "500.000đ",
+                        price: "495.000đ"
+                    },
+                ],
+            };
+
+            // Hàm cập nhật thông tin hiển thị
+            const updateInfo = (
+                providerName,
+                cardValue,
+                cardPrice,
+                phoneNumber = ""
+            ) => {
+                const fee = 1980; // Phí giao dịch cố định
+                const discount =
+                    parseFloat(cardValue.replace(/[^\d]/g, "")) -
+                    parseFloat(cardPrice.replace(/[^\d]/g, ""));
+                const total = parseFloat(cardPrice.replace(/[^\d]/g, "")) + fee;
+
+                infoList.innerHTML = `
+      <li class="border-bottom border-secondary pb-2 pt-2">
+        Hình thức nạp:
+        <span class="float-end text-danger">${providerName}</span>
+      </li>
+      <li class="border-bottom border-secondary pb-2 pt-2">
+        Mệnh giá:
+        <span class="float-end text-danger">${cardValue}</span>
+      </li>
+      <li class="border-bottom border-secondary pb-2 pt-2">
+        Số điện thoại nạp:
+        <span class="float-end text-danger">${phoneNumber || "Chưa nhập"}</span>
+      </li>
+      <li class="border-bottom border-secondary pb-2 pt-2">
+        Phí giao dịch:
+        <span class="float-end text-danger">${fee.toLocaleString()}đ</span>
+      </li>
+      <li class="border-bottom border-secondary pb-2 pt-2">
+        Giảm giá:
+        <span class="float-end text-danger">${discount.toLocaleString()}đ</span>
+      </li>
+      <li class="fw-bold">
+        Tổng tiền:
+        <span class="float-end text-danger" style="font-size: xx-large">
+          ${total.toLocaleString()}đ
+        </span>
+      </li>
+    `;
+            };
+
+            const phoneInput = document.getElementById("phone-input");
+            phoneInput.addEventListener("input", () => {
+                const activeProvider = document.querySelector(".provider.active");
+                const activeCard = document.querySelector(".provider2.active");
+                if (activeProvider && activeCard) {
+                    const providerName = activeProvider.getAttribute("data-provider");
+                    const cardValue = activeCard.getAttribute("data-value");
+                    const cardPrice = activeCard.getAttribute("data-price");
+                    const phoneNumber = phoneInput.value;
+                    updateInfo(providerName, cardValue, cardPrice, phoneNumber);
+                }
+            });
+
+            // Hàm render danh sách giá trị
+            const renderPrices = (selectedData, providerName) => {
+                provider2Container.innerHTML = selectedData
+                    .map(
+                        (item, index) => `
+        <div class="provider2 me-3 mb-3 ${index === 0 ? "active" : ""}" 
+             data-value="${item.value}" data-price="${item.price}">
+          <p>${item.value}</p>
+          <small> Giá bán: <a style="color: #002bff">${item.price}</a> </small>
+        </div>
+      `
+                    )
+                    .join("");
+
+                const priceElements = document.querySelectorAll(".provider2");
+                priceElements.forEach((priceEl, index) => {
+                    priceEl.addEventListener("click", () => {
+                        priceElements.forEach((el) => el.classList.remove("active"));
+                        priceEl.classList.add("active");
+                        const cardValue = priceEl.getAttribute("data-value");
+                        const cardPrice = priceEl.getAttribute("data-price");
+                        const phoneNumber = phoneInput.value; // Lấy số điện thoại hiện tại
+                        updateInfo(providerName, cardValue, cardPrice, phoneNumber);
+                    });
+
+                    // Mặc định active phần tử đầu tiên
+                    if (index === 0) {
+                        const cardValue = priceEl.getAttribute("data-value");
+                        const cardPrice = priceEl.getAttribute("data-price");
+                        const phoneNumber = phoneInput.value; // Lấy số điện thoại hiện tại
+                        updateInfo(providerName, cardValue, cardPrice, phoneNumber);
+                    }
+                });
+            };
+
+            // Khi người dùng click vào nhà cung cấp
+            providers.forEach((provider) => {
+                provider.addEventListener("click", () => {
+                    providers.forEach((el) => el.classList.remove("active"));
+                    provider.classList.add("active");
+                    const providerType = provider.getAttribute("data-provider");
+                    if (data[providerType]) {
+                        renderPrices(data[providerType], providerType);
+                    } else {
+                        provider2Container.innerHTML = `
+          <div class="w-100 text-center p-3">
+            <p style="font-size: 1.2em; color: #ff0000;">Sắp mở bán</p>
+          </div>
+        `;
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

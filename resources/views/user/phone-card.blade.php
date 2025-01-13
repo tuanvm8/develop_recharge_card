@@ -17,37 +17,20 @@
             <div class="col-md-8">
                 <h5 class="card p-3">Chọn nhà cung cấp</h5>
                 <div class="d-flex flex-wrap p-2" id="provider-container">
-                    <div class="provider me-3 mb-3" data-provider="garena">
-                        <img alt="Garena" src="{{ asset('asset/images/GARENA_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="vina">
+                        <img alt="Vina" src="{{ asset('asset/images/VINAPHONE_01.jpg') }}" />
                     </div>
-                    <div class="provider me-3 mb-3" data-provider="zing">
-                        <img alt="Zing" src="{{ asset('asset/images/ZING_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="viettel">
+                        <img alt="Viettel" src="{{ asset('asset/images/VIETTEL_01.png') }}" />
                     </div>
-                    <div class="provider me-3 mb-3" data-provider="vcoin">
-                        <img alt="Vcoin" src="{{ asset('asset/images/V_COIN_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="scoin">
-                        <img alt="Scoin" src="{{ asset('asset/images/SCOIN_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="soha">
-                        <img alt="Soha" src="{{ asset('asset/images/SOHA_02.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="appota">
-                        <img alt="Appota" src="{{ asset('asset/images/APPOTA_CARD_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="gosu">
-                        <img alt="Gosu" src="{{ asset('asset/images/GOSU_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="bit">
-                        <img alt="Bit" src="{{ asset('asset/images/BIT_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="mobile">
+                        <img alt="Mobile" src="{{ asset('asset/images/MOBIFONE_01.png') }}" />
                     </div>
                 </div>
                 <h5 class="card p-3">Chọn mệnh giá</h5>
                 <div class="d-flex flex-wrap p-2" id="provider2-container">
                     <div class="w-100 text-center p-3">
-                        <p style="font-size: 1.2em; color: #ff0000">
-                            Hãy chọn nhà cung cấp
-                        </p>
+                        <p style="font-size: 1.2em; color: #ff0000;">Hãy chọn nhà cung cấp</p>
                     </div>
                 </div>
                 <h5 class="card p-3">Chọn số lượng thẻ</h5>
@@ -55,14 +38,11 @@
                     <p class="fw-semibold">Số lượng</p>
                     <div class="d-flex">
                         <button class="btn btn-sm me-1 btn-decrease"
-                            style="background-color: rgb(12, 164, 176); color: #fff">
-                            -
-                        </button>
+                            style="background-color: rgb(12, 164, 176); color: #fff;">-</button>
                         <input type="number" class="form-control text-center me-1 quantity-input" value="1"
                             min="0" style="max-width: 80px" />
-                        <button class="btn btn-sm btn-increase" style="background-color: rgb(12, 164, 176); color: #fff">
-                            +
-                        </button>
+                        <button class="btn btn-sm btn-increase"
+                            style="background-color: rgb(12, 164, 176); color: #fff;">+</button>
                     </div>
                 </div>
                 <h5 class="card p-3">Thông tin nhận thẻ</h5>
@@ -127,177 +107,65 @@
                     </li>
                 </ul>
                 <button id="pay-button" class="btn btn-primary w-100"
-                    style="background-image: linear-gradient(90deg,#01b49b,#277de4) !important;">
-                    Thanh Toán
-                </button>
+                    style="background-image: linear-gradient(90deg,#01b49b,#277de4)!important;">Thanh Toán</button>
             </div>
         </div>
     </div>
     <script>
-        // Giá cho từng loại thẻ
-        document.addEventListener("DOMContentLoaded", () => {
-            const providers = document.querySelectorAll(".provider");
-            const provider2Container = document.getElementById(
-                "provider2-container"
-            );
+        document.addEventListener('DOMContentLoaded', () => {
+            const providers = document.querySelectorAll('.provider');
+            const provider2Container = document.getElementById('provider2-container');
             const infoList = document.querySelector(".list-unstyled");
             const defaultContent = provider2Container.innerHTML;
 
             const quantityInput = document.querySelector(".form-control");
             const decreaseButton = document.querySelector(".btn-decrease");
             const increaseButton = document.querySelector(".btn-increase");
-            const emailInput = document.getElementById("email-input");
+            const emailInput = document.getElementById('email-input');
             quantityInput.disabled = true;
             decreaseButton.disabled = true;
             increaseButton.disabled = true;
             const data = {
-                garena: [{
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "99.000đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.000đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "492.500đ"
-                    },
-                ],
-                zing: [{
-                        value: "20.000đ",
-                        price: "19.800đ"
-                    },
-                    {
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.800đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.400đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "493.500đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "986.000đ"
-                    },
-                ],
-                vcoin: [{
+                vina: [{
                         value: "10.000đ",
-                        price: "9.900đ"
+                        price: "9.750đ"
                     },
                     {
                         value: "20.000đ",
-                        price: "19.800đ"
+                        price: "19.500đ"
+                    },
+                    {
+                        value: "30.000đ",
+                        price: "29.250đ"
                     },
                     {
                         value: "50.000đ",
-                        price: "49.500đ"
+                        price: "48.750đ"
                     },
                     {
                         value: "100.000đ",
-                        price: "98.700đ"
+                        price: "97.500đ"
                     },
                     {
                         value: "200.000đ",
-                        price: "197.400đ"
+                        price: "195.000đ"
                     },
                     {
                         value: "300.000đ",
-                        price: "295.500đ"
+                        price: "292.500đ"
                     },
                     {
                         value: "500.000đ",
-                        price: "491.000đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "980.000đ"
+                        price: "487.500đ"
                     },
                 ],
-                // scoin: [
-
-                // ],
-                soha: [{
+                viettel: [{
                         value: "10.000đ",
-                        price: "9.900đ"
+                        price: "9.850đ"
                     },
                     {
                         value: "20.000đ",
                         price: "19.800đ"
-                    },
-                    {
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.800đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.600đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "492.500đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "970.000đ"
-                    },
-                ],
-                appota: [{
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.500đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.000đ"
-                    },
-                    {
-                        value: "300.000đ",
-                        price: "295.500đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "490.000đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "978.000đ"
-                    },
-                    {
-                        value: "2.000.000đ",
-                        price: "1.956.000đ"
-                    },
-                    {
-                        value: "3.000.000đ",
-                        price: "2.934.000đ"
-                    },
-                ],
-                gosu: [{
-                        value: "10.000đ",
-                        price: "9.900đ"
-                    },
-                    {
-                        value: "20.000đ",
-                        price: "19.700đ"
                     },
                     {
                         value: "50.000đ",
@@ -312,35 +180,58 @@
                         price: "197.000đ"
                     },
                     {
-                        value: "500.000đ",
-                        price: "491.000đ"
+                        value: "300.000đ",
+                        price: "295.500đ"
                     },
                     {
-                        value: "1.000.000đ",
-                        price: "980.000đ"
+                        value: "500.000đ",
+                        price: "492.500đ"
                     },
                 ],
-                // bit: [
-
-                // ],
+                mobile: [{
+                        value: "10.000đ",
+                        price: "9.850đ"
+                    },
+                    {
+                        value: "20.000đ",
+                        price: "19.700đ"
+                    },
+                    {
+                        value: "30.000đ",
+                        price: "29.550đ"
+                    },
+                    {
+                        value: "50.000đ",
+                        price: "49.250đ"
+                    },
+                    {
+                        value: "100.000đ",
+                        price: "98.500đ"
+                    },
+                    {
+                        value: "200.000đ",
+                        price: "197.000đ"
+                    },
+                    {
+                        value: "300.000đ",
+                        price: "295.500đ"
+                    },
+                    {
+                        value: "500.000đ",
+                        price: "492.500đ"
+                    },
+                ],
             };
 
             // Hàm cập nhật thông tin hiển thị
-            const updateInfo = (
-                providerName,
-                cardValue,
-                cardPrice,
-                quantity = 1,
-                email = ""
-            ) => {
+            const updateInfo = (providerName, cardValue, cardPrice, quantity = 1, email = "") => {
                 const fee = 1980; // Phí giao dịch cố định
                 const discount =
                     quantity *
                     (parseFloat(cardValue.replace(/[^\d]/g, "")) -
                         parseFloat(cardPrice.replace(/[^\d]/g, "")));
                 const total =
-                    quantity * parseFloat(cardPrice.replace(/[^\d]/g, "")) +
-                    fee * quantity;
+                    quantity * parseFloat(cardPrice.replace(/[^\d]/g, "")) + fee * quantity;
 
                 infoList.innerHTML = `
       <li class="border-bottom border-secondary pb-2 pt-2">
@@ -357,7 +248,7 @@
       </li>
       <li class="border-bottom border-secondary pb-2 pt-2">
         Email nhận:
-        <span class="float-end text-danger">${email}</span>
+        <span class="float-end text-danger">${email} </span>
       </li>
       <li class="border-bottom border-secondary pb-2 pt-2">
         Phí giao dịch:
@@ -376,7 +267,7 @@
     `;
             };
 
-            emailInput.addEventListener("input", () => {
+            emailInput.addEventListener('input', () => {
                 const email = emailInput.value.trim();
                 const activeProvider = document.querySelector(".provider.active");
                 const activeCard = document.querySelector(".provider2.active");
@@ -413,13 +304,8 @@
                         const cardValue = priceEl.getAttribute("data-value");
                         const cardPrice = priceEl.getAttribute("data-price");
                         const email = emailInput.value;
-                        updateInfo(
-                            providerName,
-                            cardValue,
-                            cardPrice,
-                            parseInt(quantityInput.value, 10),
-                            email
-                        );
+                        updateInfo(providerName, cardValue, cardPrice, parseInt(quantityInput
+                            .value, 10), email);
                     });
 
                     // Mặc định active phần tử đầu tiên
@@ -427,13 +313,8 @@
                         const cardValue = priceEl.getAttribute("data-value");
                         const cardPrice = priceEl.getAttribute("data-price");
                         const email = emailInput.value;
-                        updateInfo(
-                            providerName,
-                            cardValue,
-                            cardPrice,
-                            parseInt(quantityInput.value, 10),
-                            email
-                        );
+                        updateInfo(providerName, cardValue, cardPrice, parseInt(quantityInput.value,
+                            10), email);
                     }
                 });
 
@@ -477,17 +358,10 @@
                         const activeCard = document.querySelector(".provider2.active");
                         const email = emailInput.value.trim();
                         if (activeProvider && activeCard) {
-                            const providerName =
-                                activeProvider.getAttribute("data-provider");
+                            const providerName = activeProvider.getAttribute("data-provider");
                             const cardValue = activeCard.getAttribute("data-value");
                             const cardPrice = activeCard.getAttribute("data-price");
-                            updateInfo(
-                                providerName,
-                                cardValue,
-                                cardPrice,
-                                currentValue,
-                                email
-                            );
+                            updateInfo(providerName, cardValue, cardPrice, currentValue, email);
                         }
                     }
                     // Vô hiệu hóa nếu đạt min
@@ -507,17 +381,10 @@
                         const activeCard = document.querySelector(".provider2.active");
                         const email = emailInput.value.trim();
                         if (activeProvider && activeCard) {
-                            const providerName =
-                                activeProvider.getAttribute("data-provider");
+                            const providerName = activeProvider.getAttribute("data-provider");
                             const cardValue = activeCard.getAttribute("data-value");
                             const cardPrice = activeCard.getAttribute("data-price");
-                            updateInfo(
-                                providerName,
-                                cardValue,
-                                cardPrice,
-                                currentValue,
-                                email
-                            );
+                            updateInfo(providerName, cardValue, cardPrice, currentValue, email);
                         }
                     }
                     // Vô hiệu hóa nếu đạt max
@@ -531,7 +398,6 @@
         document.getElementById('pay-button').addEventListener('click', function() {
             const emailInput = document.getElementById('email-input');
             const emailError = document.getElementById('email-error');
-            console.log(emailError);
             const emailValue = emailInput.value.trim();
 
             // Regular expression to validate email
