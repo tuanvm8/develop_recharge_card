@@ -1,48 +1,33 @@
 @extends('user.main')
 @section('pageTitle', 'Trang chủ')
 @section('templateContent')
-    <div class="col-12 my-4">
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" style="height: 300px"
-                        src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
-                        alt="First slide" />
-                </div>
+<div class="col-12 my-4">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" style="height: 300px"
+                    src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
+                    alt="First slide" />
             </div>
         </div>
     </div>
+</div>
     <div class="container my-4">
         <div class="row">
             <div class="col-md-8">
                 <h5 class="card p-3">Chọn nhà cung cấp</h5>
                 <div class="d-flex flex-wrap p-2" id="provider-container">
-                    <div class="provider me-3 mb-3" data-provider="garena">
-                        <img alt="Garena" src="{{ asset('asset/images/GARENA_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="vina">
+                        <img alt="Vina" src="{{ asset('asset/images/VINAPHONE_01.jpg') }}"/>
                     </div>
-                    <div class="provider me-3 mb-3" data-provider="zing">
-                        <img alt="Zing" src="{{ asset('asset/images/ZING_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="viettel">
+                        <img alt="Viettel" src="{{ asset('asset/images/VIETTEL_01.png') }}" />
                     </div>
-                    <div class="provider me-3 mb-3" data-provider="vcoin">
-                        <img alt="Vcoin" src="{{ asset('asset/images/V_COIN_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="scoin">
-                        <img alt="Scoin" src="{{ asset('asset/images/SCOIN_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="soha">
-                        <img alt="Soha" src="{{ asset('asset/images/SOHA_02.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="appota">
-                        <img alt="Appota" src="{{ asset('asset/images/APPOTA_CARD_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="gosu">
-                        <img alt="Gosu" src="{{ asset('asset/images/GOSU_01.png') }}" />
-                    </div>
-                    <div class="provider me-3 mb-3" data-provider="bit">
-                        <img alt="Bit" src="{{ asset('asset/images/BIT_01.png') }}" />
+                    <div class="provider me-3 mb-3" data-provider="mobile">
+                        <img alt="Mobile" src="{{ asset('asset/images/MOBIFONE_01.png') }}" />
                     </div>
                 </div>
-                <h5 class="card p-3">Chọn mệnh giá</h5>
+                <h5 class="card p-3">Chọn thẻ data</h5>
                 <div class="d-flex flex-wrap p-2" id="provider2-container">
                     <div class="w-100 text-center p-3">
                         <p style="font-size: 1.2em; color: #ff0000">
@@ -106,6 +91,10 @@
                         <span class="float-end text-danger"></span>
                     </li>
                     <li class="border-bottom border-secondary pb-2 pt-2">
+                        Data:
+                        <span class="float-end text-danger"></span>
+                    </li>
+                    <li class="border-bottom border-secondary pb-2 pt-2">
                         Số lượng:
                         <span class="float-end text-danger"></span>
                     </li>
@@ -127,7 +116,7 @@
                     </li>
                 </ul>
                 <button id="pay-button" class="btn btn-primary w-100"
-                    style="background-image: linear-gradient(90deg,#01b49b,#277de4) !important;">
+                    style="background-image: linear-gradient(90deg,#01b49b,#277de4 !important;">
                     Thanh Toán
                 </button>
             </div>
@@ -151,257 +140,268 @@
             decreaseButton.disabled = true;
             increaseButton.disabled = true;
             const data = {
-                garena: [{
-                        value: "50.000đ",
-                        price: "49.500đ"
+                vina: [{
+                        value: "50 MB",
+                        nsd: "30 ngày",
+                        listedPrice: "1.500đ",
+                        sellingPrice: "1.500đ",
                     },
                     {
-                        value: "100.000đ",
-                        price: "99.000đ"
+                        value: "100 MB",
+                        nsd: "30 ngày",
+                        listedPrice: "3.000đ",
+                        sellingPrice: "3.000đ",
                     },
                     {
-                        value: "200.000đ",
-                        price: "197.000đ"
+                        value: "150 MB",
+                        nsd: "30 ngày",
+                        listedPrice: "4.500đ",
+                        sellingPrice: "4.500đ",
                     },
                     {
-                        value: "500.000đ",
-                        price: "492.500đ"
+                        value: "250 MB",
+                        nsd: "30 ngày",
+                        listedPrice: "7.500đ",
+                        sellingPrice: "7.500đ",
+                    },
+                    {
+                        value: "1 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "20.000đ",
+                        sellingPrice: "18.000đ",
+                    },
+                    {
+                        value: "3 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "50.000đ",
+                        sellingPrice: "45.000đ",
+                    },
+                    {
+                        value: "5 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "70.000đ",
+                        sellingPrice: "66.500đ",
+                    },
+                    {
+                        value: "8 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "100.000đ",
+                        sellingPrice: "95.000đ",
+                    },
+                    {
+                        value: "12 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "120.000đ",
+                        sellingPrice: "120.000đ",
+                    },
+                    {
+                        value: "15 GB",
+                        nsd: "30 ngày",
+                        listedPrice: "150.000đ",
+                        sellingPrice: "150.000đ",
                     },
                 ],
-                zing: [{
-                        value: "20.000đ",
-                        price: "19.800đ"
+                viettel: [{
+                        value: "1 GB",
+                        nsd: "2 giờ",
+                        listedPrice: "7.000đ",
+                        sellingPrice: "6.615đ",
                     },
                     {
-                        value: "50.000đ",
-                        price: "49.500đ"
+                        value: "1 GB",
+                        nsd: "1 ngày",
+                        listedPrice: "8.000đ",
+                        sellingPrice: "7.560đ",
                     },
                     {
-                        value: "100.000đ",
-                        price: "98.800đ"
+                        value: "1 GB",
+                        nsd: "1 ngày",
+                        listedPrice: "9.000đ",
+                        sellingPrice: "8.505đ",
                     },
                     {
-                        value: "200.000đ",
-                        price: "197.400đ"
+                        value: "3 GB",
+                        nsd: "6 giờ",
+                        listedPrice: "11.000đ",
+                        sellingPrice: "10.395đ",
                     },
                     {
-                        value: "500.000đ",
-                        price: "493.500đ"
+                        value: "2 GB",
+                        nsd: "1 ngày",
+                        listedPrice: "12.000đ",
+                        sellingPrice: "11.340đ",
                     },
                     {
-                        value: "1.000.000đ",
-                        price: "986.000đ"
+                        value: "2 GB",
+                        nsd: "1 ngày",
+                        listedPrice: "13.000đ",
+                        sellingPrice: "12.285đ",
+                    },
+                    {
+                        value: "4 GB",
+                        nsd: "3 ngày",
+                        listedPrice: "20.000đ",
+                        sellingPrice: "18.900đ",
+                    },
+                    {
+                        value: "4 GB",
+                        nsd: "3 ngày",
+                        listedPrice: "22.000đ",
+                        sellingPrice: "20.790đ",
+                    },
+                    {
+                        value: "8 GB",
+                        nsd: "7 ngày",
+                        listedPrice: "36.000đ",
+                        sellingPrice: "34.020đ",
+                    },
+                    {
+                        value: "8 GB",
+                        nsd: "7 ngày",
+                        listedPrice: "38.000đ",
+                        sellingPrice: "35.910đ",
+                    },
+                    {
+                        value: "1 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "110.000đ",
+                        sellingPrice: "103.950đ",
+                    },
+                    {
+                        value: "1 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "115.000đ",
+                        sellingPrice: "108.675đ",
+                    },
+                    {
+                        value: "2 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "145.000đ",
+                        sellingPrice: "137.025đ",
+                    },
+                    {
+                        value: "2 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "150.000đ",
+                        sellingPrice: "141.750đ",
+                    },
+                    {
+                        value: "3 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "165.000đ",
+                        sellingPrice: "155.925đ",
+                    },
+                    {
+                        value: "3 GB/Ngày",
+                        nsd: "30 ngày",
+                        listedPrice: "170.000đ",
+                        sellingPrice: "160.650đ",
                     },
                 ],
-                vcoin: [{
-                        value: "10.000đ",
-                        price: "9.900đ"
+                mobile: [{
+                        value: "15000 MB",
+                        nsd: "3 ngày",
+                        listedPrice: "15.000đ",
+                        sellingPrice: "14.700đ",
                     },
                     {
-                        value: "20.000đ",
-                        price: "19.800đ"
+                        value: "24000 MB",
+                        nsd: "1 ngày",
+                        listedPrice: "20.000đ",
+                        sellingPrice: "19.600đ",
                     },
                     {
-                        value: "50.000đ",
-                        price: "49.500đ"
+                        value: "1500 MB",
+                        nsd: "10 ngày",
+                        listedPrice: "20.000đ",
+                        sellingPrice: "19.600đ",
                     },
                     {
-                        value: "100.000đ",
-                        price: "98.700đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.400đ"
-                    },
-                    {
-                        value: "300.000đ",
-                        price: "295.500đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "491.000đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "980.000đ"
+                        value: "30000 MB",
+                        nsd: "7 ngày",
+                        listedPrice: "30.000đ",
+                        sellingPrice: "29.400đ",
                     },
                 ],
-                // scoin: [
-
-                // ],
-                soha: [{
-                        value: "10.000đ",
-                        price: "9.900đ"
-                    },
-                    {
-                        value: "20.000đ",
-                        price: "19.800đ"
-                    },
-                    {
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.800đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.600đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "492.500đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "970.000đ"
-                    },
-                ],
-                appota: [{
-                        value: "50.000đ",
-                        price: "49.500đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.500đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.000đ"
-                    },
-                    {
-                        value: "300.000đ",
-                        price: "295.500đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "490.000đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "978.000đ"
-                    },
-                    {
-                        value: "2.000.000đ",
-                        price: "1.956.000đ"
-                    },
-                    {
-                        value: "3.000.000đ",
-                        price: "2.934.000đ"
-                    },
-                ],
-                gosu: [{
-                        value: "10.000đ",
-                        price: "9.900đ"
-                    },
-                    {
-                        value: "20.000đ",
-                        price: "19.700đ"
-                    },
-                    {
-                        value: "50.000đ",
-                        price: "49.250đ"
-                    },
-                    {
-                        value: "100.000đ",
-                        price: "98.500đ"
-                    },
-                    {
-                        value: "200.000đ",
-                        price: "197.000đ"
-                    },
-                    {
-                        value: "500.000đ",
-                        price: "491.000đ"
-                    },
-                    {
-                        value: "1.000.000đ",
-                        price: "980.000đ"
-                    },
-                ],
-                // bit: [
-
-                // ],
             };
 
             // Hàm cập nhật thông tin hiển thị
             const updateInfo = (
                 providerName,
                 cardValue,
-                cardPrice,
+                listedPrice,
+                sellingPrice,
+                nsd,
                 quantity = 1,
                 email = ""
             ) => {
                 const fee = 1980; // Phí giao dịch cố định
                 const discount =
-                    quantity *
-                    (parseFloat(cardValue.replace(/[^\d]/g, "")) -
-                        parseFloat(cardPrice.replace(/[^\d]/g, "")));
+                    (parseFloat(listedPrice.replace(/[^\d]/g, "")) -
+                        parseFloat(sellingPrice.replace(/[^\d]/g, ""))) *
+                    quantity;
                 const total =
-                    quantity * parseFloat(cardPrice.replace(/[^\d]/g, "")) +
+                    quantity * parseFloat(sellingPrice.replace(/[^\d]/g, "")) +
                     fee * quantity;
 
                 infoList.innerHTML = `
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Loại mã thẻ:
-        <span class="float-end text-danger">${providerName}</span>
-      </li>
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Mệnh giá thẻ:
-        <span class="float-end text-danger">${cardValue}</span>
-      </li>
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Số lượng:
-        <span class="float-end text-danger">${quantity}</span>
-      </li>
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Email nhận:
-        <span class="float-end text-danger">${email}</span>
-      </li>
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Phí giao dịch:
-        <span class="float-end text-danger">${fee.toLocaleString()}đ</span>
-      </li>
-      <li class="border-bottom border-secondary pb-2 pt-2">
-        Giảm giá:
-        <span class="float-end text-danger">${discount.toLocaleString()}đ</span>
-      </li>
-      <li class="fw-bold">
-        Tổng tiền:
-        <span class="float-end text-danger" style="font-size: xx-large">
-          ${total.toLocaleString()}đ
-        </span>
-      </li>
-    `;
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Loại mã thẻ:
+      <span class="float-end text-danger">${providerName}</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Mệnh giá thẻ:
+      <span class="float-end text-danger">${listedPrice}</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Data:
+      <span class="float-end text-danger">${cardValue}</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Số lượng:
+      <span class="float-end text-danger">${quantity}</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Email nhận:
+      <span class="float-end text-danger"> ${email}</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Phí giao dịch:
+      <span class="float-end text-danger">${fee.toLocaleString()}đ</span>
+    </li>
+    <li class="border-bottom border-secondary pb-2 pt-2">
+      Giảm giá:
+      <span class="float-end text-danger">${discount.toLocaleString()}đ</span>
+    </li>
+    <li class="fw-bold">
+      Tổng tiền:
+      <span class="float-end text-danger" style="font-size: xx-large">
+        ${total.toLocaleString()}đ
+      </span>
+    </li>
+  `;
             };
-
-            emailInput.addEventListener("input", () => {
-                const email = emailInput.value.trim();
-                const activeProvider = document.querySelector(".provider.active");
-                const activeCard = document.querySelector(".provider2.active");
-
-                if (activeProvider && activeCard) {
-                    const providerName = activeProvider.getAttribute("data-provider");
-                    const cardValue = activeCard.getAttribute("data-value");
-                    const cardPrice = activeCard.getAttribute("data-price");
-                    const quantity = parseInt(quantityInput.value, 10) || 1;
-
-                    updateInfo(providerName, cardValue, cardPrice, quantity, email);
-                }
-            });
 
             // Hàm render danh sách giá trị
             const renderPrices = (selectedData, providerName) => {
                 provider2Container.innerHTML = selectedData
                     .map(
                         (item, index) => `
-        <div class="provider2 me-3 mb-3 ${index === 0 ? "active" : ""}" 
-             data-value="${item.value}" data-price="${item.price}">
-          <p>${item.value}</p>
-          <small> Giá bán: <a style="color: #002bff">${item.price}</a> </small>
+      <div style="height: 100% !important" class="provider2 me-3 mb-3" ${index === 0 ? "active" : ""}" 
+           data-value="${item.value}" data-nsd="${item.nsd}" 
+           data-listed-price="${item.listedPrice}" data-selling-price="${
+                item.sellingPrice
+              }">
+        <p>${item.value}</p>
+        <div>
+          <samp>NSD: ${item.nsd}</samp><br>
+          <small> 
+            <del class="me-3">${item.listedPrice}</del> 
+            <a style="color: #002bff">${item.sellingPrice}</a> 
+          </small>
         </div>
-      `
+      </div>
+    `
                     )
                     .join("");
 
@@ -411,12 +411,16 @@
                         priceElements.forEach((el) => el.classList.remove("active"));
                         priceEl.classList.add("active");
                         const cardValue = priceEl.getAttribute("data-value");
-                        const cardPrice = priceEl.getAttribute("data-price");
+                        const nsd = priceEl.getAttribute("data-nsd");
+                        const listedPrice = priceEl.getAttribute("data-listed-price");
+                        const sellingPrice = priceEl.getAttribute("data-selling-price");
                         const email = emailInput.value;
                         updateInfo(
                             providerName,
                             cardValue,
-                            cardPrice,
+                            listedPrice,
+                            sellingPrice,
+                            nsd,
                             parseInt(quantityInput.value, 10),
                             email
                         );
@@ -425,12 +429,16 @@
                     // Mặc định active phần tử đầu tiên
                     if (index === 0) {
                         const cardValue = priceEl.getAttribute("data-value");
-                        const cardPrice = priceEl.getAttribute("data-price");
+                        const nsd = priceEl.getAttribute("data-nsd");
+                        const listedPrice = priceEl.getAttribute("data-listed-price");
+                        const sellingPrice = priceEl.getAttribute("data-selling-price");
                         const email = emailInput.value;
                         updateInfo(
                             providerName,
                             cardValue,
-                            cardPrice,
+                            listedPrice,
+                            sellingPrice,
+                            nsd,
                             parseInt(quantityInput.value, 10),
                             email
                         );
@@ -467,6 +475,29 @@
                 });
             });
 
+            emailInput.addEventListener("input", () => {
+                const email = emailInput.value.trim();
+                const activeProvider = document.querySelector(".provider.active");
+                const activeCard = document.querySelector(".provider2.active");
+                if (activeProvider && activeCard) {
+                    const providerName = activeProvider.getAttribute("data-provider");
+                    const cardValue = activeCard.getAttribute("data-value");
+                    const listedPrice = activeCard.getAttribute("data-listed-price");
+                    const sellingPrice = activeCard.getAttribute("data-selling-price");
+                    const nsd = activeCard.getAttribute("data-nsd");
+                    const quantity = parseInt(quantityInput.value, 10) || 1;
+                    updateInfo(
+                        providerName,
+                        cardValue,
+                        listedPrice,
+                        sellingPrice,
+                        nsd,
+                        quantity,
+                        email
+                    );
+                }
+            });
+
             // Tăng giảm số lượng
             decreaseButton.addEventListener("click", () => {
                 if (!quantityInput.disabled) {
@@ -480,11 +511,16 @@
                             const providerName =
                                 activeProvider.getAttribute("data-provider");
                             const cardValue = activeCard.getAttribute("data-value");
-                            const cardPrice = activeCard.getAttribute("data-price");
+                            const listedPrice =
+                                activeCard.getAttribute("data-listed-price");
+                            const sellingPrice =
+                                activeCard.getAttribute("data-selling-price");
                             updateInfo(
                                 providerName,
                                 cardValue,
-                                cardPrice,
+                                listedPrice,
+                                sellingPrice,
+                                activeCard.getAttribute("data-nsd"),
                                 currentValue,
                                 email
                             );
@@ -510,11 +546,16 @@
                             const providerName =
                                 activeProvider.getAttribute("data-provider");
                             const cardValue = activeCard.getAttribute("data-value");
-                            const cardPrice = activeCard.getAttribute("data-price");
+                            const listedPrice =
+                                activeCard.getAttribute("data-listed-price");
+                            const sellingPrice =
+                                activeCard.getAttribute("data-selling-price");
                             updateInfo(
                                 providerName,
                                 cardValue,
-                                cardPrice,
+                                listedPrice,
+                                sellingPrice,
+                                activeCard.getAttribute("data-nsd"),
                                 currentValue,
                                 email
                             );
@@ -528,28 +569,27 @@
                 }
             });
         });
-        document.getElementById('pay-button').addEventListener('click', function() {
-            const emailInput = document.getElementById('email-input');
-            const emailError = document.getElementById('email-error');
-            console.log(emailError);
-            const emailValue = emailInput.value.trim();
+        document.getElementById('pay-button').addEventListener('click', function () {
+        const emailInput = document.getElementById('email-input');
+        const emailError = document.getElementById('email-error');
+        const emailValue = emailInput.value.trim();
 
-            // Regular expression to validate email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Regular expression to validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!emailRegex.test(emailValue)) {
-                // Invalid email: Show error message
-                emailError.style.display = 'block';
-                emailInput.classList.add('is-invalid'); // Optional: Add a red border for visual feedback
-            } else {
-                // Valid email: Hide error message
-                emailError.style.display = 'none';
-                emailInput.classList.remove('is-invalid');
+        if (!emailRegex.test(emailValue)) {
+            // Invalid email: Show error message
+            emailError.style.display = 'block';
+            emailInput.classList.add('is-invalid'); // Optional: Add a red border for visual feedback
+        } else {
+            // Valid email: Hide error message
+            emailError.style.display = 'none';
+            emailInput.classList.remove('is-invalid');
 
-                // Handle successful form submission or further logic
-                alert('Email hợp lệ. Xử lý thanh toán.');
-            }
-        });
+            // Handle successful form submission or further logic
+            alert('Email hợp lệ. Xử lý thanh toán.');
+        }
+    });
     </script>
     <style>
         .is-invalid {

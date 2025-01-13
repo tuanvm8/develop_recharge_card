@@ -49,7 +49,7 @@ Route::group(['prefix' => 'recharge-card-admin', 'as' => 'admin.'], function () 
 
 Route::get('/gioi-thieu', function () { return view('user/introduction');})->name('introduction');
 Route::get('/tin-tuc', function () { return view('user/news');})->name('news');
-Route::get('/chinh-sach', function () { return view('user/policy');})->name('policy');
+Route::get('/dieu-khoan', function () { return view('user/clause');})->name('policy');
 
 
 Route::controller(WithdrawMoneyController::class)->group(function(){
@@ -59,9 +59,12 @@ Route::controller(WithdrawMoneyController::class)->group(function(){
 
 Route::controller(UserProductController::class)->group(function(){
     Route::get('/', 'home')->name('home');
-    Route::get('/video-hom-nay', 'today_video')->name('today_video');
-    Route::get('/xem-video/{id}', 'watch_videos')->name('watch_videos');
-    Route::post('/add-point', 'add_point');
+    Route::get('/by-card-phone', 'phone')->name('byCardPhone');
+    Route::get('/loadedy-card-phone', 'loadedPhone')->name('loadedPhone');
+    Route::get('/data-card', 'dataCard')->name('dataCard');
+    // Route::get('/video-hom-nay', 'today_video')->name('today_video');
+    // Route::get('/xem-video/{id}', 'watch_videos')->name('watch_videos');
+    // Route::post('/add-point', 'add_point');
 
 });
 

@@ -1,56 +1,32 @@
-<footer>
+<footer class="footer pt-5" style="height: 400px">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3">
-                <a href="index.html" title="KIEMTIENYOUTUBE" class="logo_f">
-                    <img style="height: 65px;"
-                        src="{{ asset('asset/images/avata/DFCC1B02-2C31-4864-AB9C-C1256E9ABA02.jpg') }}"
-                        alt="KIEMTIENYOUTUBE" />
-                </a>
-
-                <div class="cotnent-f">
-                    <p>Nhận điểm thưởng hằng ng&agrave;y khi xem video v&agrave; nhận ngay kho kiến thức khi đăng
-                        k&yacute; t&agrave;i khoản trị gi&aacute; rất cao từ Bậc thầy Phan Anh.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-4">
+                    <img src="{{ asset('asset/images/logo_napluon.png') }}" width="160" />
                 </div>
-
-                <div class="mxh_f">
-                    <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
+                <hr />
+                <p>Công ty cổ phần công nghệ và thương mại TEKTRA</p>
+                <p>
+                    Địa chỉ: Tòa nhà Tung tâm thương mại Interseco, số 17 đường Phạm
+                    Hùng, phường Mỹ Đình 2, quận Nam Từ Liêm, thành phố Hà Nội
+                </p>
+                <p>Hotline: 086 799 2686</p>
             </div>
-            <div class="col-lg-3">
-                <h4 class="title_f">Về chúng tôi</h4>
-                <div class="cotnent-f">
-                    <ul>
-                        <li><a href="#">Giới thiệu</a></li>
-                    </ul>
-                </div>
-
-                <div class="box visited">
-                    <p><span class="v1">_dangtruycap:</span> 15</p>
-                    <!-- <p><span class="v2">_trongngay:</span> </p>
- <p><span class="v3">_trongthang:</span> </p> -->
-                    <p><span class="v3">_tongtruycap:</span> </p>
-                </div>
+            <div class="col-md-4">
+                <hr style="margin-top: 63px" />
+                <p>Chính sách bảo mật</p>
+                <p>Chính sách giao hàng</p>
+                <p>Chính sách bảo hành &amp; đổi trả hàng</p>
+                <p>Chính sách bán hàng</p>
             </div>
-            <div class="col-lg-3">
-                <h4 class="title_f">Hỗ trợ</h4>
-                <div class="cotnent-f">
-                    <ul>
-                        <li><a href="#">Hướng dẫn đăng k&yacute;</a></li>
-                        <li><a href="#">Hướng dẫn kiếm tiền</a></li>
-                        <li><a href="#">Hướng dẫn thanh to&aacute;n</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="bando_f">
-                </div>
+            <div class="col-md-4 col-12">
+                <iframe
+                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fnapluon.vn&amp;tabs=timeline&amp;width=340&amp;height=243px&amp;small_header=false&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true&amp;appId=446704202764352"
+                    width="340" height="243px" scrolling="no" frameborder="0" allowfullscreen="allowfullscreen"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    style="border: none; overflow: hidden"></iframe>
             </div>
         </div>
     </div>
-    <div class="text-center container chantrang">
-        Copyright © 2023 </div>
 </footer>
