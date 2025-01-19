@@ -83,61 +83,41 @@
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img alt="Napluon logo" height="40" src="{{ asset('asset/images/logo_napluon.png') }}" width="160" />
-
+            <img src="{{ asset('asset/images/logo_napluon.png') }}" alt="Napluon logo" height="40">
         </a>
-        <div class="collapse navbar-collapse" style="justify-content: flex-end">
-            <ul class="navbar-nav me-5 mb-2 mb-lg-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <span style="font-weight: 550;">Mua Thẻ</span>
+                        Mua Thẻ
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('home') }}"><i class="fas fa-gamepad me-3"></i>
-                                Mua Thẻ Game
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('byCardPhone') }}"><i class="fas fa-phone me-3"></i>Mua Thẻ
-                                ĐiệnThoại
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('loadedPhone') }}"><i class="fas fa-mobile-alt me-3"></i>
-                                Nạp Điện Thoại
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('dataCard') }}"><i class="fas fa-wifi me-3"></i>
-                                Mua Thẻ Data
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item" href="{{ route('home') }}">Mua Thẻ Game</a></li>
+                        <li><a class="dropdown-item" href="{{ route('byCardPhone') }}">Mua Thẻ Điện Thoại</a></li>
+                        <li><a class="dropdown-item" href="{{ route('loadedPhone') }}">Nạp Điện Thoại</a></li>
+                        <li><a class="dropdown-item" href="{{ route('dataCard') }}">Mua Thẻ Data</a></li>
                     </ul>
                 </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" href="#"><span style="font-weight: 550;"> Tin Tức<span> </a>
-                </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" href="{{ route('introduction') }}"> <span style="font-weight: 550;">Giới Thiệu <span></a>
-                </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" href="{{ route('policy') }}"> <span style="font-weight: 550;">Điều Khoản Sử Dụng<span> </a>
-                </li>
+                <li class="nav-item px-3"><a class="nav-link" href="#">Tin Tức</a></li>
+                <li class="nav-item px-3"><a class="nav-link" href="{{ route('introduction') }}">Giới Thiệu</a></li>
+                <li class="nav-item px-3"><a class="nav-link" href="{{ route('policy') }}">Điều Khoản Sử Dụng</a></li>
             </ul>
-
-            <div class="d-flex">
+            <div class="d-flex mt-3 mt-lg-0">
                 <a href="{{ route('login.index') }}" class="me-2">
                     <button class="btn btn-outline-primary">
-                        <i class="fas fa-lock me-2"></i><span style="font-weight: 550;">Đăng Nhập <span>
+                        <i class="fas fa-lock me-2"></i>Đăng Nhập
                     </button>
                 </a>
                 <a href="{{ route('register.index') }}">
-                    <button class="btn btn-warning text-white" style="font-weight: 550;">
+                    <button class="btn btn-warning text-white">
                         <i class="fas fa-user-plus me-2"></i>Tạo Tài Khoản
                     </button>
                 </a>

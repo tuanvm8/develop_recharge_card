@@ -50,7 +50,7 @@
                             <div class="mb-3 text-center ">
                                 <button type="submit" class="btn btn-main text-white" style="background: red;">Đăng ký</button>
                             </div>
-                            <p class="font-xs text-muted text-center text-danger">Đã đăng ký tài khoản trước đó <a
+                            <p class="py-2 font-xs text-muted text-center text-danger">Đã đăng ký tài khoản trước đó <a
                                     href="{{ route('login.index') }}">Đăng nhập</a></p>
                         </form>
                     </div>

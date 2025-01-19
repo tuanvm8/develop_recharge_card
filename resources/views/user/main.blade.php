@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ url('/asset/images/logo_small.png') }}">
     <title>Napluon</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
@@ -133,6 +134,41 @@
 
         .nav-item {
             border-right: 1px solid #1976d2;
+        }
+
+        @media (max-width: 820px) {
+            .nav-item {
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 375px) {
+            #provider-container {
+                margin-left: 3px;
+            }
+        }
+        @media (min-width: 375px) and (max-width: 576px) {
+            .navbar-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar-toggler {
+                border-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280,0,0,0.5%29' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+            }
+
+            .d-flex a {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .navbar-collapse {
+                text-align: center;
+            }
         }
     </style>
 </head>
