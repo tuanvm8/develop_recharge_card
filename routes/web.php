@@ -62,10 +62,8 @@ Route::controller(UserProductController::class)->group(function(){
     Route::get('/by-card-phone', 'phone')->name('byCardPhone');
     Route::get('/loadedy-card-phone', 'loadedPhone')->name('loadedPhone');
     Route::get('/data-card', 'dataCard')->name('dataCard');
-    // Route::get('/video-hom-nay', 'today_video')->name('today_video');
-    // Route::get('/xem-video/{id}', 'watch_videos')->name('watch_videos');
-    // Route::post('/add-point', 'add_point');
-
+    Route::post('/payment', 'createQr')->name('payment');
+    Route::post('/return-vnpay', 'returnVnpay');
 });
 
 Route::controller(UserClient::class)->group(function(){

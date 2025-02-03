@@ -68,29 +68,14 @@
                 <h5 class="card p-3">Thông tin nhận thẻ</h5>
                 <div class="p-3">
                     <p class="fw-semibold">Email nhận mã thẻ <span class="text-danger">*</span></p>
-                    <input id="email-input" class="form-control" placeholder="Vui lòng nhập email nhận mã thẻ"
-                        type="email" style="height: 60px" />
+                    <input id="email-input" value="a@gmail.com" class="form-control"
+                        placeholder="Vui lòng nhập email nhận mã thẻ" type="email" style="height: 60px" />
                     <div id="email-error" class="text-danger mt-2" style="display: none;">
                         Vui lòng nhập một địa chỉ email hợp lệ.
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                {{-- <h2 class="fw-semibold">Thanh toán</h2>
-                <h5 class="card fw-normal p-2">Hình thức thanh toàn</h5> --}}
-                {{-- <div class="payment-method mb-3">
-                    <div class="row p-2">
-                        <div class="col-4">
-                            <img alt="VNPay logo" src="/image/vnpay-qrcode-1.png" width="120" />
-                        </div>
-                        <div class="col-4">
-                            <p class="fw-normal fs-6">Thanh toán quét mã VNPAYQR</p>
-                        </div>
-                        <div class="col-4">
-                            <a class="text-decoration-none" href="#"> Thay đổi </a>
-                        </div>
-                    </div>
-                </div> --}}
                 <h5 class="card fw-normal p-2">Chi tiết giao dịch</h5>
                 <p class="text-danger p-2">
                     Quý khách kiểm tra và cảnh giác không thanh toán hộ, hoặc cung cấp
@@ -123,7 +108,7 @@
                     </li>
                     <li class="fw-bold">
                         Tổng tiền:
-                        <span class="float-end text-danger" style="font-size: xx-large"></span>
+                        <span class="float-end text-danger total" style="font-size: xx-large"></span>
                     </li>
                 </ul>
                 <button id="pay-button" class="btn btn-primary w-100"
@@ -369,7 +354,7 @@
       </li>
       <li class="fw-bold">
         Tổng tiền:
-        <span class="float-end text-danger" style="font-size: xx-large">
+        <span class="float-end text-danger total" style="font-size: xx-large">
           ${total.toLocaleString()}đ
         </span>
       </li>
@@ -528,11 +513,30 @@
                 }
             });
         });
+
         document.getElementById('pay-button').addEventListener('click', function() {
             const emailInput = document.getElementById('email-input');
             const emailError = document.getElementById('email-error');
-            console.log(emailError);
             const emailValue = emailInput.value.trim();
+
+            const activeProvider = document.querySelector(".provider.active");
+            const providerValue = activeProvider.getAttribute("data-provider");
+
+            // Lấy thẻ provider2 đã chọn
+            const activeCard = document.querySelector(".provider2.active");
+            const cardValue = activeCard.getAttribute("data-value");
+            const quantityInput = document.querySelector(".form-control");
+            let quantity = 1;
+            if (quantityInput) {
+                quantity = parseInt(quantityInput.value, 10) || 1;
+            }
+
+            const spanElement = document.querySelector('.total');
+            const totalAmount = spanElement.textContent.trim();
+
+
+            const cardName = document.querySelector('.float-end.text-danger');
+            const nameCard = cardName.textContent.trim();
 
             // Regular expression to validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -549,11 +553,70 @@
                 // Handle successful form submission or further logic
                 alert('Email hợp lệ. Xử lý thanh toán.');
             }
+
+
+            const requestData = {
+                email: emailValue,
+                nameCard: nameCard,
+                quantity: quantity,
+                cardValue: cardValue.replace(/[^\d.-]/g, ''),
+                totalAmount: totalAmount.replace(/[^\d.-]/g, '') 
+            };
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+            /// xử lý logic 
+            fetch('/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify(requestData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server trả về lỗi: ' + response.statusText);
+                }
+                return response.json();  // Tiến hành phân tích JSON nếu mã trạng thái là OK
+            })
+            .then(data => {
+                console.log(222, data);
+
+                if (data && data.success) {
+                    const qrCodeUrl = data.qr_code_url;
+                    document.getElementById('qr-code-image').src = qrCodeUrl;
+                } else {
+                    alert('Có lỗi khi tạo mã QR');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error); // Hiển thị lỗi nếu có
+            });
+
         });
     </script>
     <style>
-        .is-invalid {
-            border: 1px solid red !important;
-        }
+        /* Hiển thị menu từ 375px */
+        /* @media (max-width: 430px) {
+                .custom-serveice {
+                    
+                    margin-left: 28px !important;
+                }
+            } */
+
+
+        /* @media (max-width: 375px) {
+                #provider-container {
+                    margin-left: 3px;
+                }
+            }
+            @media (max-width: 414px) {
+                #provider-container {
+                    margin-left: 24px;
+                }
+                .custom-serveice {
+                    margin-left: 24px;
+                }
+            } */
     </style>
 @endsection
