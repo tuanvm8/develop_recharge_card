@@ -33,18 +33,12 @@ class UserClient extends Controller
         ], $messages);
 
         try {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 2])) {
-                if ($request->login == 2) {
-                    return redirect()->route('today_video');
-                } else if ($request->login == 4 && $request->id) {
-                    return redirect()->route('watch_videos', ['id' => $request->id]);
-                } else {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1])) {
                     return redirect()->route('home');
-                }
             }
 
             return back()->withErrors([
-                'msg' => 'Email hoặc mật khẩu không đúng, hoặc tài khoản của bạn chưa được kích hoạt.',
+                'msg' => 'Email hoặc mật khẩu không đúng.',
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
@@ -106,7 +100,7 @@ class UserClient extends Controller
             
             DB::commit();
 
-            return redirect()->route('register.index')->with('messageSuccess', 'Cảm ơn bạn đã đăng ký. Vui lòng check email để đăng nhập');
+            return redirect()->route('login.index')->with('messageSuccess', 'Cảm ơn bạn đã đăng ký.');
         } catch (\Throwable $th) {
             DB::rollBack(); 
             return redirect()->back()->withErrors(['msg' => 'Có lỗi xảy ra. Vui lòng thử lại sau.']);

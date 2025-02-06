@@ -32,9 +32,9 @@
                                                 nhập</span></label>
                                     </div>
                                 </div>
-                                <a class="text-danger" href="{{ route('resetPassword.create') }}">Quên mật khẩu?</a>
+                                {{-- <a class="text-danger" href="{{ route('resetPassword.create') }}">Quên mật khẩu?</a> --}}
                             </div>
-                            <p class="help is-danger text-danger confirm_password">{{ $errors->first('msg') }}</p>
+                            <p class="help is-danger text-danger confirm_password mx-5">{{ $errors->first('msg') }}</p>
 
                             <div class="text-center py-2">
                                 <button type="submit" class="btn btn-main text-white" style="background: red;" name="login" value="3">Đăng nhập</button>

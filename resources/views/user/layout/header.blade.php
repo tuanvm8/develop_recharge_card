@@ -93,7 +93,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto" style="font-weight:550">
                 <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -108,20 +108,34 @@
                 </li>
                 <li class="nav-item px-3"><a class="nav-link" href="#">Tin Tức</a></li>
                 <li class="nav-item px-3"><a class="nav-link" href="{{ route('introduction') }}">Giới Thiệu</a></li>
-                <li class="nav-item px-3"><a class="nav-link" href="{{ route('policy') }}">Điều Khoản Sử Dụng</a></li>
+                <li class="nav-item px-3 custom-border"><a class="nav-link" href="{{ route('policy') }}">Điều Khoản Sử Dụng</a></li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
-                <a href="{{ route('login.index') }}" class="me-2">
-                    <button class="btn btn-outline-primary">
-                        <i class="fas fa-lock me-2"></i>Đăng Nhập
-                    </button>
-                </a>
-                <a href="{{ route('register.index') }}">
-                    <button class="btn btn-warning text-white">
-                        <i class="fas fa-user-plus me-2"></i>Tạo Tài Khoản
-                    </button>
-                </a>
-            </div>
+                @if(Auth::check())
+                    <div class="d-flex align-items-center">
+                        <span class="me-3">Xin chào {{ Auth::user()->username }}</span>
+                        <a class="btn btn-dangky nav-link d-none d-md-block" href="{{ route('logout') }}">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                        </a>
+                    </div>
+                @else
+                    <a href="{{ route('login.index') }}" class="me-2">
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-lock me-2"></i>Đăng Nhập
+                        </button>
+                    </a>
+                    <a href="{{ route('register.index') }}">
+                        <button class="btn btn-warning text-white">
+                            <i class="fas fa-user-plus me-2"></i>Tạo Tài Khoản
+                        </button>
+                    </a>
+                @endif
+            </div>            
         </div>
     </div>
 </nav>
+<style>
+    .custom-border {
+        border-right: none;
+    }
+</style>

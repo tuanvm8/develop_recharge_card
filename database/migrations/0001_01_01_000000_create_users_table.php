@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('email')->unique()->index();
             $table->string('phone', 10)->nullable()->index();;
             $table->unsignedTinyInteger('status')->default(1)->index();
-            $table->unsignedInteger('point')->default(0)->index();
             $table->unsignedTinyInteger('role')->default(2)->index();
             $table->timestamp('email_verified_at')->nullable()->index();
             $table->string('password');

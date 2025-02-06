@@ -15,32 +15,32 @@
                         <form method="post" action="{{ route('register.post') }}" id="form-dangky">
                             @csrf
                             <div class="mb-3 mx-4">
-                                <label class="form-label">Họ và tên</label>
+                                <label class="form-label">Họ và tên<span class="text-danger"> *</span></label>
                                 <input type="text" class="form-control" required="" name="ho_ten"
                                     placeholder="Nhập họ tên" value="{{ old('ho_ten') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('ho_ten') }}</p>
                             </div>
                             <div class="mb-3 mx-4">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">Email<span class="text-danger"> *</span></label></label>
                                 <input type="text" class="form-control" required="" name="email"
                                     placeholder="Nhập email" value="{{ old('email') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('email') }}</p>
                             </div>
                             <div class="mb-3 mx-4">
-                                <label class="form-label">Điện thoại</label>
+                                <label class="form-label">Điện thoại<span class="text-danger"> *</span></label></label>
                                 <input type="text" class="form-control" required="" name="dien_thoai"
                                     placeholder="Nhập số điện thoại" value="{{ old('dien_thoai') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('dien_thoai') }}
                                 </p>
                             </div>
                             <div class="mb-3 mx-4">
-                                <label class="form-label">Mật khẩu</label>
+                                <label class="form-label">Mật khẩu<span class="text-danger"> *</span></label></label>
                                 <input required="" class="form-control" type="password" id="matkhau" name="mat_khau"
                                     placeholder="Nhập mật khẩu" value="{{ old('mat_khau') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('mat_khau') }}</p>
                             </div>
                             <div class="mb-3 mx-4">
-                                <label class="form-label">Xác nhận mật khẩu</label>
+                                <label class="form-label">Xác nhận mật khẩu<span class="text-danger"> *</span></label></label>
                                 <input required="" class="form-control" type="password" name="mat_khau2"
                                     placeholder="Nhập lại mật khẩu" value="{{ old('mat_khau2') }}">
                                 <p class="help is-danger text-danger confirm_password">{{ $errors->first('mat_khau2') }}
