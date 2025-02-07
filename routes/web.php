@@ -62,8 +62,22 @@ Route::controller(UserProductController::class)->group(function(){
     Route::get('/by-card-phone', 'phone')->name('byCardPhone');
     Route::get('/loadedy-card-phone', 'loadedPhone')->name('loadedPhone');
     Route::get('/data-card', 'dataCard')->name('dataCard');
-    Route::post('/payment', 'createQr')->name('payment');
-    Route::post('/return-vnpay', 'returnVnpay');
+
+    // mua thẻ gamegame
+    Route::post('/payment', 'paymentVNPAY')->name('payment');
+    Route::get('/return-vnpay', 'returnVNPAY')->name('return.vnpay');
+
+    // mua thẻ điện thoại
+    Route::post('/payment-phone', 'paymentPhoneVNPAY')->name('payment.phone');
+    Route::get('/return-phone-vnpay', 'returnPhoneVNPAY')->name('return.phone.vnpay');
+
+    // nạp thẻ điện thoại
+    Route::post('/payment-loaded-phone', 'paymentLoadedPhoneVNPAY')->name('payment.loaded.phone');
+    Route::get('/return-loaded-phone-vnpay', 'returnLoadedPhoneVNPAY')->name('return.loaded.phone.vnpay');
+
+    // mua thẻ data
+    Route::post('/payment-data', 'paymentDataVNPAY')->name('payment.data');
+    Route::get('/return-data-vnpay', 'returnDataVNPAY')->name('return.data.vnpay');
 });
 
 Route::controller(UserClient::class)->group(function(){
