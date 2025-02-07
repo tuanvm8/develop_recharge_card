@@ -1,24 +1,24 @@
 @extends('user.main')
 @section('pageTitle', 'Trang chủ')
 @section('templateContent')
-<div class="col-12 my-4">
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" style="height: 300px"
-                    src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
-                    alt="First slide" />
+    <div class="col-12 my-4">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" style="height: 300px"
+                        src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
+                        alt="First slide" />
+                </div>
             </div>
         </div>
     </div>
-</div>
     <div class="container my-4">
         <div class="row">
             <div class="col-md-8">
                 <h5 class="card p-3">Chọn nhà cung cấp</h5>
                 <div class="d-flex flex-wrap p-2" id="provider-container">
                     <div class="provider me-3 mb-3" data-provider="vina">
-                        <img alt="Vina" src="{{ asset('asset/images/VINAPHONE_01.jpg') }}"/>
+                        <img alt="Vina" src="{{ asset('asset/images/VINAPHONE_01.jpg') }}" />
                     </div>
                     <div class="provider me-3 mb-3" data-provider="viettel">
                         <img alt="Viettel" src="{{ asset('asset/images/VIETTEL_01.png') }}" />
@@ -112,7 +112,7 @@
                     </li>
                     <li class="fw-bold">
                         Tổng tiền:
-                        <span class="float-end text-danger" style="font-size: xx-large"></span>
+                        <span class="float-end text-danger total" style="font-size: xx-large"></span>
                     </li>
                 </ul>
                 <button id="pay-button" class="btn btn-primary w-100"
@@ -375,7 +375,7 @@
     </li>
     <li class="fw-bold">
       Tổng tiền:
-      <span class="float-end text-danger" style="font-size: xx-large">
+      <span class="float-end text-danger total" style="font-size: xx-large">
         ${total.toLocaleString()}đ
       </span>
     </li>
@@ -569,27 +569,75 @@
                 }
             });
         });
-        document.getElementById('pay-button').addEventListener('click', function () {
-        const emailInput = document.getElementById('email-input');
-        const emailError = document.getElementById('email-error');
-        const emailValue = emailInput.value.trim();
+        document.getElementById('pay-button').addEventListener('click', function() {
+            const emailInput = document.getElementById('email-input');
+            const emailError = document.getElementById('email-error');
+            const emailValue = emailInput.value.trim();
 
-        // Regular expression to validate email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const activeProvider = document.querySelector(".provider.active");
+            const providerValue = activeProvider ? activeProvider.getAttribute("data-provider") : '';
 
-        if (!emailRegex.test(emailValue)) {
-            // Invalid email: Show error message
-            emailError.style.display = 'block';
-            emailInput.classList.add('is-invalid'); // Optional: Add a red border for visual feedback
-        } else {
-            // Valid email: Hide error message
-            emailError.style.display = 'none';
-            emailInput.classList.remove('is-invalid');
+            const activeCard = document.querySelector(".provider2.active");
+            const cardValue = activeCard ? activeCard.getAttribute("data-listed-price") : '';
 
-            // Handle successful form submission or further logic
-            alert('Email hợp lệ. Xử lý thanh toán.');
-        }
-    });
+            const quantityInput = document.querySelector(".form-control");
+            let quantity = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
+
+            const spanElement = document.querySelector('.total');
+            const totalAmount = spanElement ? spanElement.textContent.trim() : '0';
+
+            const cardName = document.querySelector('.float-end.text-danger');
+            const nameCard = cardName ? cardName.textContent.trim() : '';
+
+            // Kiểm tra email hợp lệ
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailValue)) {
+                emailError.style.display = 'block';
+                emailInput.classList.add('is-invalid');
+                return;
+            } else {
+                emailError.style.display = 'none';
+                emailInput.classList.remove('is-invalid');
+            }
+
+            // Tạo một form ẩn
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/payment-data';
+
+            // Thêm CSRF token
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+
+            if (csrfToken) {
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+            }
+
+            // Thêm dữ liệu vào form
+            const requestData = {
+                email: emailValue,
+                nameCard: nameCard,
+                quantity: quantity,
+                cardValue: cardValue.replace(/[^\d.-]/g, ''),
+                totalAmount: totalAmount.replace(/[^\d.-]/g, '')
+            };
+
+            for (const key in requestData) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = requestData[key];
+                form.appendChild(input);
+            }
+
+            // Thêm form vào body và submit
+            document.body.appendChild(form);
+            form.submit();
+        });
     </script>
     <style>
         .is-invalid {

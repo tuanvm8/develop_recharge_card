@@ -1,17 +1,17 @@
 @extends('user.main')
 @section('pageTitle', 'Trang chủ')
 @section('templateContent')
-<div class="col-12 my-4">
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" style="height: 300px"
-                    src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
-                    alt="First slide" />
+    <div class="col-12 my-4">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" style="height: 300px"
+                        src="https://cdn.mobilecity.vn/mobilecity-vn/images/2024/05/hinh-nen-bau-troi-1.jpg.webp"
+                        alt="First slide" />
+                </div>
             </div>
         </div>
     </div>
-</div>
     <div class="container my-4">
         <div class="row">
             <div class="col-md-8">
@@ -44,6 +44,9 @@
                     </p>
                     <input id="phone-input" class="form-control" placeholder="Vui lòng nhập số điện thoại" type="number"
                         style="height: 60px" />
+                    <div id="phone-error" class="text-danger mt-2" style="display: none;">
+                        Vui lòng nhập số điện thoại hợp lệ.
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -90,10 +93,10 @@
                     </li>
                     <li class="fw-bold">
                         Tổng tiền:
-                        <span class="float-end text-danger" style="font-size: xx-large"></span>
+                        <span class="float-end text-danger total" style="font-size: xx-large"></span>
                     </li>
                 </ul>
-                <button class="btn btn-primary w-100"
+                <button id="pay-button" class="btn btn-primary w-100"
                     style="
             background-image: linear-gradient(
               90deg,
@@ -193,7 +196,7 @@
       </li>
       <li class="fw-bold">
         Tổng tiền:
-        <span class="float-end text-danger" style="font-size: xx-large">
+        <span class="float-end text-danger total" style="font-size: xx-large">
           ${total.toLocaleString()}đ
         </span>
       </li>
@@ -265,6 +268,71 @@
                     }
                 });
             });
+        });
+
+        document.getElementById('pay-button').addEventListener('click', function() {
+            const phoneInput = document.getElementById('phone-input');
+            const phoneError = document.getElementById('phone-error');
+            const phoneValue = phoneInput.value.trim();
+
+            const activeProvider = document.querySelector(".provider.active");
+            const providerValue = activeProvider ? activeProvider.getAttribute("data-provider") : '';
+
+            const activeCard = document.querySelector(".provider2.active");
+            const cardValue = activeCard ? activeCard.getAttribute("data-value") : '';
+
+            const spanElement = document.querySelector('.total');
+            const totalAmount = spanElement ? spanElement.textContent.trim() : '0';
+
+            const cardName = document.querySelector('.float-end.text-danger');
+            const nameCard = cardName ? cardName.textContent.trim() : '';
+
+            const phoneRegex = /^(0[1-9][0-9]{8})$/;
+            if (!phoneRegex.test(phoneValue)) {
+                phoneError.style.display = 'block';
+                phoneInput.classList.add('is-invalid');
+                return;
+            } else {
+                phoneError.style.display = 'none';
+                phoneInput.classList.remove('is-invalid');
+            }
+
+            // Tạo một form ẩn
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/payment-loaded-phone';
+
+            // Thêm CSRF token
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+
+            if (csrfToken) {
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+            }
+
+            // Thêm dữ liệu vào form
+            const requestData = {
+                phone: phoneValue,
+                nameCard: nameCard,
+                cardValue: cardValue.replace(/[^\d.-]/g, ''),
+                totalAmount: totalAmount.replace(/[^\d.-]/g, '')
+            };
+
+            for (const key in requestData) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = requestData[key];
+                form.appendChild(input);
+            }
+
+            // Thêm form vào body và submit
+            document.body.appendChild(form);
+            form.submit();
         });
     </script>
 @endsection

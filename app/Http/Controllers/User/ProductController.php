@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -29,87 +30,395 @@ class ProductController extends Controller
     {
         return view('user.data-card');
     }
-   
-    public function createQr(Request $request)
+
+    // mua thẻ game
+    public function paymentVNPAY(Request $request)
     {
-        dd($request->all());
-        // try {
-        // Lưu thông tin vào session
-        // session(['cost_id' => $request->id]);
-        // session(['url_prev' => url()->previous()]);
+        // dd($request->all());
+        $contactInfo = $request->input('email');
+        $nameCard = $request->input('nameCard');
+        $quantity = $request->input('quantity');
+        $cardValue = (float) str_replace('.', '', $request->input('cardValue'));
+        $totalAmount = (float) str_replace('.', '', $request->input('totalAmount'));
 
-        // Cấu hình thông tin của VNPay
-        // $vnp_TmnCode = "UDOPNWS1";  // Mã website tại VNPAY
-        // $vnp_HashSecret = "EBAHADUGCOEWYXCMYZRMTMLSHGKNRPBN";  // Chuỗi bí mật
-        // $vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";  // URL sandbox VNPay
-        // $vnp_Returnurl = "http://localhost:8000/return-vnpay";  // URL trả về sau khi thanh toán
+        $vnp_TxnRef = time() . rand(1000, 9999);
 
-        // // Lấy các dữ liệu từ request và xử lý
-        // $vnp_TxnRef = date("YmdHis");  // Mã đơn hàng (nên lưu vào database thực tế)
-        // $vnp_OrderInfo = "Thanh toán hóa đơn phí dịch vụ";
-        // $vnp_OrderType = 'billpayment';  // Loại thanh toán
-        // $totalAmount = str_replace('.', '', $request->totalAmount);  // Xử lý số tiền
-        // $vnp_Amount = $totalAmount * 100;  // VNPay yêu cầu số tiền phải là đơn vị nhỏ nhất (đồng)
-        // $vnp_Locale = 'vn';  // Ngôn ngữ
-        // $vnp_IpAddr = request()->ip();  // Địa chỉ IP của người dùng
+        // Thông tin VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('return.vnpay');
+        $vnp_TmnCode = "KA1BV3N8";
+        $vnp_HashSecret = "12GUKMUAGMQR4QW57D26MKG56RCYN9G8";
 
-        // // Tạo dữ liệu gửi lên VNPay
-        // $inputData = array(
-        //     "vnp_Version" => "2.0.0",
-        //     "vnp_TmnCode" => $vnp_TmnCode,
-        //     "vnp_Amount" => $vnp_Amount,
-        //     "vnp_Command" => "pay",
-        //     "vnp_CreateDate" => date('YmdHis'),
-        //     "vnp_CurrCode" => "VND",
-        //     "vnp_IpAddr" => $vnp_IpAddr,
-        //     "vnp_Locale" => $vnp_Locale,
-        //     "vnp_OrderInfo" => $vnp_OrderInfo,
-        //     "vnp_OrderType" => $vnp_OrderType,
-        //     "vnp_ReturnUrl" => $vnp_Returnurl,
-        //     "vnp_TxnRef" => $vnp_TxnRef,
-        // );
+        $vnp_Amount = $totalAmount * 100;
+        $vnp_Locale = "VN";
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnp_OrderInfo = "Thanh toán VNPAY đơn hàng #$vnp_TxnRef";
 
-        // // Nếu có lựa chọn ngân hàng thì thêm vnp_BankCode
-        // if (isset($request->vnp_BankCode) && $request->vnp_BankCode != "") {
-        //     $inputData['vnp_BankCode'] = $request->vnp_BankCode;
-        // }
+        $inputData = [
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => 'billpayment',
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        ];
 
-        // // Sắp xếp tham số và tạo mã hash
-        // ksort($inputData);
-        // $query = "";
-        // $i = 0;
-        // $hashdata = "";
-        // foreach ($inputData as $key => $value) {
-        //     if ($i == 1) {
-        //         $hashdata .= '&' . $key . "=" . $value;
-        //     } else {
-        //         $hashdata .= $key . "=" . $value;
-        //         $i = 1;
-        //     }
-        //     $query .= urlencode($key) . "=" . urlencode($value) . '&';
-        // }
+        // Tạo hash key bảo mật
+        ksort($inputData);
+        $hashdata = http_build_query($inputData);
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $query = $hashdata . '&vnp_SecureHash=' . $vnpSecureHash;
 
-        // // Tạo URL thanh toán
-        // $vnp_Url = $vnp_Url . "?" . $query;
+        // Lưu tạm vào session 
+        session([
+            'contact_info' => $contactInfo,
+            'name_card' => $nameCard,
+            'quantity' => $quantity,
+            'card_value' => $cardValue,
+            'total_amount' => $totalAmount,
+            'vnp_TxnRef' => $vnp_TxnRef,
+        ]);
 
-        // // Tính toán Secure Hash
-        // if (isset($vnp_HashSecret)) {
-        //     $vnpSecureHash = hash('sha256', $vnp_HashSecret . $hashdata);
-        //     $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
-        // }
-
-        // Redirect đến VNPay
-        // return redirect($vnp_Url);
-        // } catch (\Throwable $th) {
-        //     dd($th);
-        // }
+        // Chuyển hướng đến VNPAY
+        return redirect($vnp_Url . "?" . $query);
     }
 
-    // public function returnVnpay(Request $request)
-    // {
-    //     $vnp_SecureHash = $request->vnp_SecureHash;
-    //     $vnp_TxnRef = $request->vnp_TxnRef;
-    //     $vnp_Amount = $request->vnp_Amount;
-    //     $vnp_ResponseCode = $request->vnp_ResponseCode;
-    // }
+    public function returnVNPAY(Request $request)
+    {
+        // Lấy thông tin từ VNPAY phản hồi
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode'); // Mã phản hồi
+        $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã giao dịch
+
+        if ($vnp_ResponseCode == '00') {
+            // Lấy lại dữ liệu từ session
+            $contactInfo = session('contact_info');
+            $nameCard = session('name_card');
+            $quantity = session('quantity');
+            $cardValue = session('card_value');
+            $totalAmount = session('total_amount');
+
+            Payment::create([
+                'user_id' => 1,
+                'contact_info' => $contactInfo,
+                'name_card' => $nameCard,
+                'quantity' => $quantity,
+                'card_value' => $cardValue,
+                'total_amount' => $totalAmount,
+                'transaction_type' => 'Mua thẻ game',
+                'vnp_TxnRef' => $vnp_TxnRef,
+                'status' => 1,
+            ]);
+
+            session()->forget([
+                'contact_info',
+                'name_card',
+                'quantity',
+                'card_value',
+                'total_amount',
+                'vnp_TxnRef'
+            ]);
+
+            return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+        } else {
+            return redirect()->route('home')->with('error', 'Thanh toán thất bại!');
+        }
+    }
+
+    // mua thẻ điện thoại
+    public function paymentPhoneVNPAY(Request $request)
+    {
+        $contactInfo = $request->input('email');
+        $nameCard = $request->input('nameCard');
+        $quantity = $request->input('quantity');
+        $cardValue = (float) str_replace('.', '', $request->input('cardValue'));
+        $totalAmount = (float) str_replace('.', '', $request->input('totalAmount'));
+
+        $vnp_TxnRef = time() . rand(1000, 9999);
+
+        // Thông tin VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('return.phone.vnpay');
+        $vnp_TmnCode = "KA1BV3N8";
+        $vnp_HashSecret = "12GUKMUAGMQR4QW57D26MKG56RCYN9G8";
+
+        $vnp_Amount = $totalAmount * 100;
+        $vnp_Locale = "VN";
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnp_OrderInfo = "Thanh toán VNPAY đơn hàng #$vnp_TxnRef";
+
+        $inputData = [
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => 'billpayment',
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        ];
+
+        // Tạo hash key bảo mật
+        ksort($inputData);
+        $hashdata = http_build_query($inputData);
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $query = $hashdata . '&vnp_SecureHash=' . $vnpSecureHash;
+
+        // Lưu tạm vào session 
+        session([
+            'contact_info' => $contactInfo,
+            'name_card' => $nameCard,
+            'quantity' => $quantity,
+            'card_value' => $cardValue,
+            'total_amount' => $totalAmount,
+            'vnp_TxnRef' => $vnp_TxnRef,
+        ]);
+
+        // Chuyển hướng đến VNPAY
+        return redirect($vnp_Url . "?" . $query);
+    }
+
+    public function returnPhoneVNPAY(Request $request)
+    {
+        // Lấy thông tin từ VNPAY phản hồi
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode'); // Mã phản hồi
+        $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã giao dịch
+
+        if ($vnp_ResponseCode == '00') {
+            // Lấy lại dữ liệu từ session
+            $contactInfo = session('contact_info');
+            $nameCard = session('name_card');
+            $quantity = session('quantity');
+            $cardValue = session('card_value');
+            $totalAmount = session('total_amount');
+
+            Payment::create([
+                'user_id' => 1,
+                'contact_info' => $contactInfo,
+                'name_card' => $nameCard,
+                'quantity' => $quantity,
+                'card_value' => $cardValue,
+                'total_amount' => $totalAmount,
+                'transaction_type' => 'Mua thẻ điện thoại',
+                'vnp_TxnRef' => $vnp_TxnRef,
+                'status' => 1,
+            ]);
+
+            session()->forget([
+                'contact_info',
+                'name_card',
+                'quantity',
+                'card_value',
+                'total_amount',
+                'vnp_TxnRef'
+            ]);
+
+            return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+        } else {
+            return redirect()->route('home')->with('error', 'Thanh toán thất bại!');
+        }
+    }
+
+    // nạp thẻ điên thoại
+    public function paymentLoadedPhoneVNPAY(Request $request)
+    {
+        // dd($request->all());
+        $contactInfo = $request->input('phone');
+        $nameCard = $request->input('nameCard');
+        $cardValue = (float) str_replace('.', '', $request->input('cardValue'));
+        $totalAmount = (float) str_replace('.', '', $request->input('totalAmount'));
+
+        $vnp_TxnRef = time() . rand(1000, 9999);
+
+        // Thông tin VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('return.loaded.phone.vnpay');
+        $vnp_TmnCode = "KA1BV3N8";
+        $vnp_HashSecret = "12GUKMUAGMQR4QW57D26MKG56RCYN9G8";
+
+        $vnp_Amount = $totalAmount * 100;
+        $vnp_Locale = "VN";
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnp_OrderInfo = "Thanh toán VNPAY đơn hàng #$vnp_TxnRef";
+
+        $inputData = [
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => 'billpayment',
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        ];
+
+        // Tạo hash key bảo mật
+        ksort($inputData);
+        $hashdata = http_build_query($inputData);
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $query = $hashdata . '&vnp_SecureHash=' . $vnpSecureHash;
+
+        // Lưu tạm vào session 
+        session([
+            'contact_info' => $contactInfo,
+            'name_card' => $nameCard,
+            'card_value' => $cardValue,
+            'total_amount' => $totalAmount,
+            'vnp_TxnRef' => $vnp_TxnRef,
+        ]);
+
+        // Chuyển hướng đến VNPAY
+        return redirect($vnp_Url . "?" . $query);
+    }
+
+    public function returnLoadedPhoneVNPAY(Request $request)
+    {
+        // Lấy thông tin từ VNPAY phản hồi
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode'); // Mã phản hồi
+        $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã giao dịch
+
+        if ($vnp_ResponseCode == '00') {
+            // Lấy lại dữ liệu từ session
+            $contactInfo = session('contact_info');
+            $nameCard = session('name_card');
+            $cardValue = session('card_value');
+            $totalAmount = session('total_amount');
+
+            Payment::create([
+                'user_id' => 1,
+                'contact_info' => $contactInfo,
+                'name_card' => $nameCard,
+                'quantity' => 1,
+                'card_value' => $cardValue,
+                'total_amount' => $totalAmount,
+                'transaction_type' => 'Nạp thẻ điện thoại',
+                'vnp_TxnRef' => $vnp_TxnRef,
+                'status' => 1,
+            ]);
+
+            session()->forget([
+                'contact_info',
+                'name_card',
+                'card_value',
+                'total_amount',
+                'vnp_TxnRef'
+            ]);
+
+            return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+        } else {
+            return redirect()->route('home')->with('error', 'Thanh toán thất bại!');
+        }
+    }
+
+    // mua thẻ data
+    public function paymentDataVNPAY(Request $request)
+    {
+        // dd($request->all());
+        $contactInfo = $request->input('email');
+        $nameCard = $request->input('nameCard');
+        $quantity = $request->input('quantity');
+        $cardValue = (float) str_replace('.', '', $request->input('cardValue'));
+        $totalAmount = (float) str_replace('.', '', $request->input('totalAmount'));
+
+        $vnp_TxnRef = time() . rand(1000, 9999);
+
+        // Thông tin VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('return.data.vnpay');
+        $vnp_TmnCode = "KA1BV3N8";
+        $vnp_HashSecret = "12GUKMUAGMQR4QW57D26MKG56RCYN9G8";
+
+        $vnp_Amount = $totalAmount * 100;
+        $vnp_Locale = "VN";
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnp_OrderInfo = "Thanh toán VNPAY đơn hàng #$vnp_TxnRef";
+
+        $inputData = [
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => 'billpayment',
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        ];
+
+        // Tạo hash key bảo mật
+        ksort($inputData);
+        $hashdata = http_build_query($inputData);
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $query = $hashdata . '&vnp_SecureHash=' . $vnpSecureHash;
+
+        // Lưu tạm vào session 
+        session([
+            'contact_info' => $contactInfo,
+            'name_card' => $nameCard,
+            'quantity' => $quantity,
+            'card_value' => $cardValue,
+            'total_amount' => $totalAmount,
+            'vnp_TxnRef' => $vnp_TxnRef,
+        ]);
+
+        // Chuyển hướng đến VNPAY
+        return redirect($vnp_Url . "?" . $query);
+    }
+
+    public function returnDataVNPAY(Request $request)
+    {
+        // Lấy thông tin từ VNPAY phản hồi
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode'); // Mã phản hồi
+        $vnp_TxnRef = $request->input('vnp_TxnRef'); // Mã giao dịch
+
+        if ($vnp_ResponseCode == '00') {
+            // Lấy lại dữ liệu từ session
+            $contactInfo = session('contact_info');
+            $nameCard = session('name_card');
+            $quantity = session('quantity');
+            $cardValue = session('card_value');
+            $totalAmount = session('total_amount');
+
+            Payment::create([
+                'user_id' => 1,
+                'contact_info' => $contactInfo,
+                'name_card' => $nameCard,
+                'quantity' => $quantity,
+                'card_value' => $cardValue,
+                'total_amount' => $totalAmount,
+                'transaction_type' => 'Mua thẻ data',
+                'vnp_TxnRef' => $vnp_TxnRef,
+                'status' => 1,
+            ]);
+
+            session()->forget([
+                'contact_info',
+                'name_card',
+                'quantity',
+                'card_value',
+                'total_amount',
+                'vnp_TxnRef'
+            ]);
+
+            return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+        } else {
+            return redirect()->route('home')->with('error', 'Thanh toán thất bại!');
+        }
+    }
 }
