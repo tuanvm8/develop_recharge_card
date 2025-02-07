@@ -141,28 +141,10 @@
             increaseButton.disabled = true;
             const data = {
                 vina: [{
-                        value: "50 MB",
+                        value: "500 MB",
                         nsd: "30 ngày",
-                        listedPrice: "1.500đ",
-                        sellingPrice: "1.500đ",
-                    },
-                    {
-                        value: "100 MB",
-                        nsd: "30 ngày",
-                        listedPrice: "3.000đ",
-                        sellingPrice: "3.000đ",
-                    },
-                    {
-                        value: "150 MB",
-                        nsd: "30 ngày",
-                        listedPrice: "4.500đ",
-                        sellingPrice: "4.500đ",
-                    },
-                    {
-                        value: "250 MB",
-                        nsd: "30 ngày",
-                        listedPrice: "7.500đ",
-                        sellingPrice: "7.500đ",
+                        listedPrice: "10.000đ",
+                        sellingPrice: "9.000đ",
                     },
                     {
                         value: "1 GB",
@@ -202,18 +184,6 @@
                     },
                 ],
                 viettel: [{
-                        value: "1 GB",
-                        nsd: "2 giờ",
-                        listedPrice: "7.000đ",
-                        sellingPrice: "6.615đ",
-                    },
-                    {
-                        value: "1 GB",
-                        nsd: "1 ngày",
-                        listedPrice: "8.000đ",
-                        sellingPrice: "7.560đ",
-                    },
-                    {
                         value: "1 GB",
                         nsd: "1 ngày",
                         listedPrice: "9.000đ",
