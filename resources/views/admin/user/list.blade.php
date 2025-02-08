@@ -39,8 +39,6 @@
                         <th scope="col">Tên đăng nhập</th>
                         <th scope="col" class="text-center">Email</th>
                         <th scope="col" class="text-center">Phone</th>
-                        <th scope="col" class="text-center">Point</th>
-                        <th scope="col" class="text-center" width="100">Trạng thái</th>
                         <th scope="col" class="text-center" width="5%"></th>
                     </tr>
                 </thead>
@@ -51,21 +49,6 @@
                             <td>{{ $user->username }}</td>
                             <td class="text-center">{{ $user->email }}</td>
                             <td class="text-center">{{ $user->phone }}</td>
-                             <td class="text-center">{{ number_format($user->point, 0, ',', '.') . ' đ' }}</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch ms-4 d-flex justify-content-center">
-                                    <form action="{{ route('admin.user.status', ['id' => $user->id]) }}" method="POST"
-                                        id="form-status-{{ $user->id }}">
-                                        @csrf
-                                        <input type="checkbox"
-                                            class="form-check-input status {{ $user->status == 2 ? 'active-item' : 'deactive-item' }}"
-                                            name="status" data-value="{{ $user->id }}" id="status-{{ $user->id }}"
-                                            {{ $user->status == 2 ? 'checked' : '' }}>
-                                        <label class="form-check-label" type="hidden"
-                                            for="status-{{ $user->id }}"></label>
-                                    </form>
-                                </div>
-                            </td>
                             <td class="text-center">
                                 <a href='{{ route('admin.user.update', ['id' => $user->id]) }}'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em"

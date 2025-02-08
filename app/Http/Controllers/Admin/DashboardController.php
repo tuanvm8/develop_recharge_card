@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $validatedData = $validator->validated();
         try {
             if (Auth::guard('admin')->attempt(['username' => $validatedData['username'], 'password' => $validatedData['password']])) {
-                if (Auth::guard('admin')->user()->status == 1) {
+                if (Auth::guard('admin')->user()) {
                     return redirect()->route('admin.dashboard.index');
                 } else {
                     Auth::guard('admin')->logout();

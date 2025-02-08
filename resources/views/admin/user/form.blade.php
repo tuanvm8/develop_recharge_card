@@ -53,7 +53,15 @@
                         <p class="is-danger text-danger">{{ $errors->first('phone') }}</p>
                     </div>
                 </div>
-
+                
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ old('email') ?? (isset($user) ? $user->email : '') }}">
+                        <p class="is-danger text-danger email">{{ $errors->first('email') }}</p>
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <div class="col-6">
                         <label for="password" class="form-label">Mật khẩu<span class="text-danger">*</span></label>
@@ -65,30 +73,6 @@
                         <label for="repassword" class="form-label">Nhập lại mật khẩu<span class="text-danger">*</span></label>
                         <input type="password" class="form-control" id="repassword" name="repassword">
                         <p class="help is-danger text-danger repass-word">{{ $errors->first('repassword') }}</p>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email"
-                            value="{{ old('email') ?? (isset($user) ? $user->email : '') }}">
-                        <p class="is-danger text-danger email">{{ $errors->first('email') }}</p>
-                    </div>
-                    <div class="col-6">
-                        <label for="status" class="form-label">Trạng thái<span class="text-danger">*</span></label>
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="active" value="2"
-                                    {{ old('status') ? (old('status') == 2 ? 'checked' : '') : ($isUpdate ? ($user->status == 2 ? 'checked' : '') : 'checked') }}>
-                                <label class="form-check-label" for="active">Hoạt động</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="inactive" value="1"
-                                    {{ old('status') ? (old('status') == 1 ? 'checked' : '') : ($isUpdate ? ($user->status == 1 ? 'checked' : '') : '') }}>
-                                <label class="form-check-label" for="inactive">Tạm khóa</label>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="text-end">

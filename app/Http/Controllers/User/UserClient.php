@@ -33,7 +33,7 @@ class UserClient extends Controller
         ], $messages);
 
         try {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1])) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                     return redirect()->route('home');
             }
 

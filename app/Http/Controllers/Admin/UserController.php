@@ -42,7 +42,6 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' =>  Hash::make($request->password),
                 'phone' => $request->phone,
-                'status' => $request->status,
             ]);
             DB::commit();
             return redirect()->route('admin.user.index')->with('messageSuccess', config('message.create_success'));
@@ -79,14 +78,12 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' =>  Hash::make($request->password),
                 'phone' => $request->phone,
-                'status' => $request->status,
             ];
         } else {
             $data = [
                 'username' => $request->username,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'status' => $request->status
             ];
         }
 
