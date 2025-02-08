@@ -40,13 +40,11 @@
                 <div class="p-3">
                     <p class="fw-semibold">
                         Số điện thoại nạp (Vui lòng nhập số điện thoại 10 số, bắt đầu từ
-                        số 0, ví dụ: 09...) *
+                        số 0, ví dụ: 09...) <span class="text-danger">*</span>
                     </p>
                     <input id="phone-input" class="form-control" placeholder="Vui lòng nhập số điện thoại" type="number"
                         style="height: 60px" />
-                    <div id="phone-error" class="text-danger mt-2" style="display: none;">
-                        Vui lòng nhập số điện thoại hợp lệ.
-                    </div>
+                    <p id="phone-error" style="color: red; display: none;"></p> 
                 </div>
             </div>
             <div class="col-md-4">
@@ -269,6 +267,7 @@
                 });
             });
         });
+        const isLoggedIn = false; // Đổi thành true nếu đã đăng nhập
 
         document.getElementById('pay-button').addEventListener('click', function() {
             const phoneInput = document.getElementById('phone-input');
@@ -287,14 +286,28 @@
             const cardName = document.querySelector('.float-end.text-danger');
             const nameCard = cardName ? cardName.textContent.trim() : '';
 
-            const phoneRegex = /^(0[1-9][0-9]{8})$/;
-            if (!phoneRegex.test(phoneValue)) {
-                phoneError.style.display = 'block';
-                phoneInput.classList.add('is-invalid');
+            const phoneRegex = /^(0[3|5|7|8|9])([0-9]{8})$/; // Regex kiểm tra số điện thoại VN
+
+            // Kiểm tra số điện thoại trước
+            if (!phoneValue) {
+                phoneError.textContent = "Bạn chưa nhập số điện thoại!";
+                phoneError.style.display = "block";
                 return;
-            } else {
-                phoneError.style.display = 'none';
-                phoneInput.classList.remove('is-invalid');
+            } 
+
+            if (!phoneRegex.test(phoneValue)) {
+                phoneError.textContent = "Số điện thoại không hợp lệ!";
+                phoneError.style.display = "block";
+                return;
+            } 
+
+            // Nếu nhập đúng, ẩn thông báo lỗi
+            phoneError.style.display = "none";
+
+            // Kiểm tra đăng nhập
+            if (!isLoggedIn) {
+                alert("Bạn phải đăng nhập tài khoản để thanh toán!");
+                return;
             }
 
             // Tạo một form ẩn

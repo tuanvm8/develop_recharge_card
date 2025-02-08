@@ -34,7 +34,6 @@ class ProductController extends Controller
     // mua thẻ game
     public function paymentVNPAY(Request $request)
     {
-        // dd($request->all());
         $contactInfo = $request->input('email');
         $nameCard = $request->input('nameCard');
         $quantity = $request->input('quantity');

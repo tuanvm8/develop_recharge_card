@@ -55,10 +55,8 @@
                     <p class="fw-semibold">Email nhận mã thẻ <span class="text-danger">*</span></p>
                     <input id="email-input" class="form-control" placeholder="Vui lòng nhập email nhận mã thẻ"
                         type="email" style="height: 60px" />
-                    <div id="email-error" class="text-danger mt-2" style="display: none;">
-                        Vui lòng nhập một địa chỉ email hợp lệ.
+                        <p id="email-error" style="color: red; display: none;"></p>
                     </div>
-                </div>
             </div>
             <div class="col-md-4">
                 {{-- <h2 class="fw-semibold">Thanh toán</h2>
@@ -116,7 +114,7 @@
                     </li>
                 </ul>
                 <button id="pay-button" class="btn btn-primary w-100"
-                    style="background-image: linear-gradient(90deg,#01b49b,#277de4 !important;">
+                style="background-image: linear-gradient(90deg,#01b49b,#277de4) !important;">
                     Thanh Toán
                 </button>
             </div>
@@ -539,6 +537,7 @@
                 }
             });
         });
+        const isLoggedIn = false;
         document.getElementById('pay-button').addEventListener('click', function() {
             const emailInput = document.getElementById('email-input');
             const emailError = document.getElementById('email-error');
@@ -558,16 +557,29 @@
 
             const cardName = document.querySelector('.float-end.text-danger');
             const nameCard = cardName ? cardName.textContent.trim() : '';
-
-            // Kiểm tra email hợp lệ
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(emailValue)) {
-                emailError.style.display = 'block';
+
+            if (!emailValue) {
+                emailError.textContent = "Bạn chưa nhập email!";
+                emailError.style.display = "block";
                 emailInput.classList.add('is-invalid');
                 return;
-            } else {
-                emailError.style.display = 'none';
-                emailInput.classList.remove('is-invalid');
+            }
+
+            if (!emailRegex.test(emailValue)) {
+                emailError.textContent = "Email không hợp lệ!";
+                emailError.style.display = "block";
+                emailInput.classList.add('is-invalid');
+                return;
+            } 
+
+            emailError.style.display = "none"; // Ẩn lỗi nếu nhập đúng
+            emailInput.classList.remove('is-invalid');
+            // Kiểm tra đăng nhập
+            if (!isLoggedIn) {
+               
+                alert("Bạn phải đăng ký tài khoản để thanh toán!");
+                return;
             }
 
             // Tạo một form ẩn
