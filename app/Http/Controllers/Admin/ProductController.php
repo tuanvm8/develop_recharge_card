@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
-use App\Models\Product;
+use App\Models\WithdrawMoney;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,15 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $storage = app('firebase.storage');
-        $defaultBucket = $storage->getBucket();
-
-        $products =  Product::orderBy('date_product', 'desc')->get();
-
-        foreach ($products as $imageName) {
-            $signedUrl = $defaultBucket->object($imageName->image)->signedUrl(now()->addHours(5));
-            $imageName->image = $signedUrl;
-        }
+        $products =  WithdrawMoney::orderBy('id', 'desc')->get();
         return view('admin.product.list', ['products' => $products]);
     }
 
@@ -46,33 +38,25 @@ class ProductController extends Controller
     public function store(CreateRequest $request)
     {
         try {
-            DB::beginTransaction();
-
-            $image = $request->file('image');
-            if (isset($image)) {
-                $nameImg = 'productnanaytb/' . (string) Str::uuid() . "." . $image->getClientOriginalExtension();
-                $dateProduct = \Carbon\Carbon::createFromFormat('Y-m-d', $request->date_product)->format('Y-m-d');
-                Product::create([
-                    'title' => $request->title,
-                    'url' => $request->url,
-                    'image' => $nameImg,
-                    'videoId' => $request->videoId,
-                    'date_product' => $dateProduct,
-                    'status' =>  $request->status,
-                ]);
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo');
+                $filenameLogo = $file->getClientOriginalName(); // Tạo tên file duy nhất
+                $file->move(public_path('asset/logo'), $filenameLogo);  // Lưu ảnh vào thư mục 'asset/logo'
             }
-
-            DB::commit();
-            $storage = app('firebase.storage');
-            $defaultBucket = $storage->getBucket();
-            $pathName = $image->getPathName();
-            $file = fopen($pathName, 'r');
-            $defaultBucket->upload($file, [
-                'name' => $nameImg,
+            
+            if ($request->hasFile('qr_image')) {
+                $file = $request->file('qr_image');
+                $filename = $file->getClientOriginalName();  // Tạo tên file duy nhất
+                $file->move(public_path('asset/qr'), $filename);  // Lưu ảnh vào thư mục 'asset/qr'
+            }
+            
+            WithdrawMoney::create([
+                'title' => $request->input('title'), 
+                'logo' => $filenameLogo,
+                'filename' => $filename
             ]);
             return redirect()->route('admin.product.index')->with('messageSuccess', config('message.create_success'));
         } catch (\Throwable $th) {
-            DB::rollBack();
             Log::error($th);
             return redirect()->route('admin.product.create')->with('messageError', config('message.create_error'));
         }
@@ -83,13 +67,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = WithdrawMoney::findOrFail($id);
         if (!$product) return redirect()->route('admin.product.index')->with('messageError', config('message.data_not_found'));
-
-
-        $storage = app('firebase.storage');
-        $defaultBucket = $storage->getBucket();
-        $product->image = $defaultBucket->object($product->image)->signedUrl(now()->addHours(5));
 
         return view('admin.product.form', ['product' => $product, 'isUpdate' => true]);
     }
@@ -97,70 +76,92 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, string $id)
+    public function update(UpdateRequest $request, $id)
     {
         try {
             DB::beginTransaction();
 
-            $product = Product::findOrFail($id);
-            if (!$product) return redirect()->route('admin.product.index')->with('messageError', config('message.data_not_found'));
+            $image = WithdrawMoney::findOrFail($id);
 
-            $oldPath = $product->image;
-            $data = $request->all();
-
-            if ($request->has('date_product')) {
-                $data['date_product'] = \Carbon\Carbon::createFromFormat('Y-m-d', $request->date_product)->format('Y-m-d');
+            // Cập nhật title
+            if ($request->filled('title')) {
+                $image->title = $request->input('title');
             }
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $nameImg = 'productnanaytb/' . (string) Str::uuid() . "." . $image->getClientOriginalExtension();
-                $data['image'] = $nameImg;
+            // Xử lý ảnh QR
+            if ($request->hasFile('qr_image')) {
+                $file = $request->file('qr_image');
+                $filename = $file->getClientOriginalName(); // Tránh trùng tên file
+
+                // Xóa ảnh QR cũ nếu có
+                if (!empty($image->filename)) {
+                    $oldFilePath = public_path('asset/qr/' . $image->filename);
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+
+                // Lưu ảnh mới vào thư mục
+                $file->move(public_path('asset/qr'), $filename);
+                $image->filename = $filename;
+            } else {
+                // Nếu không có ảnh mới, giữ lại ảnh cũ
+                $image->filename = $request->input('old_filename');
             }
-            unset($data['imageCheck']);
-            $product->fill($data)->save();
+
+            // Xử lý ảnh Logo
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo');
+                $logoFilename = $file->getClientOriginalName(); // Tránh trùng tên file
+
+                // Xóa logo cũ nếu có
+                if (!empty($image->logo)) {
+                    $oldLogoPath = public_path('asset/logo/' . $image->logo);
+                    if (file_exists($oldLogoPath)) {
+                        unlink($oldLogoPath);
+                    }
+                }
+
+                // Lưu logo mới vào thư mục
+                $file->move(public_path('asset/logo'), $logoFilename);
+                $image->logo = $logoFilename;
+            } else {
+                // Nếu không có ảnh mới, giữ lại ảnh cũ
+                $image->logo = $request->input('old_logo');
+            }
+
+            // Lưu thay đổi vào database
+            $image->save();
 
             DB::commit();
-
-            if ($request->hasFile('image')) {
-                $storage = app('firebase.storage');
-                $defaultBucket = $storage->getBucket();
-                $pathName = $image->getPathName();
-                $file = fopen($pathName, 'r');
-                $defaultBucket->upload($file, [
-                    'name' => $nameImg
-                ]);
-
-                // Delete image in firestorage
-                $imageReference = $defaultBucket->object($oldPath);
-                if ($imageReference->exists()) {
-                    $imageReference->delete();
-                }
-            }
-
             return redirect()->route('admin.product.index')->with('messageSuccess', config('message.update_success'));
-        } catch (Throwable $th) {
-            DB::rollback();
+        } catch (\Throwable $th) {
+            DB::rollBack();
             Log::error($th);
-            return redirect()->route('admin.product.update', $id)->with('messageError', config('message.update_failed'));
+            return redirect()->route('admin.product.update', $id)->with('messageError', config('message.update_error'));
         }
     }
 
     public function destroy(string $id)
     {
         try {
-            $product = Product::where('id', $id)->first();
+            $product = WithdrawMoney::findOrFail($id);
             if (!$product) return redirect()->route('admin.product.index')->with('messageError', config('message.data_not_found'));
+            $filePath = public_path('asset/qr/' . $product->filename); // Đường dẫn ảnh
+            $fileLogo = public_path('asset/logo/' . $product->logo);
 
-            $oldPath = $product->image;
-            DB::beginTransaction();
-            $product->delete();
-            DB::commit();
+        // Nếu file tồn tại, tiến hành xóa file
+        if (file_exists($filePath)) {
+            unlink($filePath); // Xóa ảnh
+        }
+        if (file_exists($fileLogo)) {
+            unlink($fileLogo); // Xóa ảnh
+        }
 
-            // Delete image in firestorage
-            $imageReference = app('firebase.storage')->getBucket()->object($oldPath);
-            if ($imageReference->exists()) $imageReference->delete();
-            return redirect()->route('admin.product.index')->with('messageSuccess', config('message.delete_success'));
+        DB::beginTransaction();
+        $product->delete();
+        DB::commit();
+        return redirect()->route('admin.product.index')->with('messageSuccess', config('message.delete_success'));
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error($th);
@@ -170,7 +171,7 @@ class ProductController extends Controller
 
     public function postStatus($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = WithdrawMoney::where('id', $id)->first();
         if (!$product) return back()->with('messageError', config('message.data_not_found'));
         try {
             DB::beginTransaction();

@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
               <a href="#" class="text-decoration-none">Trang chủ </a> 
             </li>
-            <li class="breadcrumb-item active">Danh mục sản phẩm </li>
+            <li class="breadcrumb-item active">Danh mục mã QR </li>
           </ol>
         </div>
       </div>
@@ -19,7 +19,7 @@
     @include('admin.core.alert')
     <div class="d-flex justify-content-between mb-3">
         <h1 class="fs-3 m-0">
-            Danh sách sản phẩm
+            Danh sách mã QR
         </h1>
         <a href="{{ route('admin.product.create') }}" class="btn btn-success">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -36,11 +36,9 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" class="text-center" width="5%">#</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col" class="text-center" width="30%">Ảnh</th>
-                    <th scope="col" class="text-center" width="30%">Thời gian</th>
-                    <th scope="col" class="text-center" width="30%">Điểm</th>
-                    <th scope="col" class="text-center" width="10%">Trạng thái</th>
+                    <th scope="col" class="text-center" width="30%">Tên ngân hàng</th>
+                    <th scope="col" class="text-center" width="30%">Logo</th>
+                    <th scope="col" class="text-center" width="30%">Mã QR</th>
                     <th scope="col" class="text-center" width="10%"></th>
                 </tr>
             </thead>
@@ -48,28 +46,17 @@
                 @foreach ($products as $product)
                     <tr>
                         <th class="text-center"></th>
-                        <td>{{ $product->title }}</td>
+                        <th class="text-center">{{ $product->title }}</th>
                         <div class="col-ms-4">
                             <td class="text-center">
-                                <img style="width:80%" src="{{ $product->image }}"
-                                    alt="Firebase Image">
+                                <img style="width:40%" src="{{ asset('asset/logo/' . $product->logo) }}" alt="Logo Image">
                             </td>
                         </div>
-                        <td  class="text-center">{{ $product->date_product }}</td>
-                        <td  class="text-center">{{ $product->point }}</td>
-                        <td class="text-center">
-                            <div class="form-check form-switch ms-4 d-flex justify-content-center">
-                                <form action="{{ route('admin.product.status', ['id' => $product->id]) }}" method="POST"
-                                    id="form-status-{{ $product->id }}">
-                                    @csrf
-                                    <input type="checkbox"
-                                        class="form-check-input status {{ $product->status == 1 ? 'active-item' : 'deactive-item' }}"
-                                        name="status" data-value="{{ $product->id }}" id="status-{{ $product->id }}"
-                                        {{ $product->status == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" type="hidden" for="status-{{ $product->id }}"></label>
-                                </form>
-                            </div>
-                        </td>
+                        <div class="col-ms-4">
+                            <td class="text-center">
+                                <img style="width:23%" src="{{ asset('asset/qr/' . $product->filename) }}" alt="QR Image">
+                            </td>
+                        </div>
                         <td class="text-center">
                             <a href='{{ route('admin.product.update', ['id' => $product->id]) }}'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1.3em" height="1.3em"

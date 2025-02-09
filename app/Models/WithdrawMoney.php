@@ -9,12 +9,8 @@ class WithdrawMoney extends Model
 {
     use HasFactory;
 
-    public $timestamps = true;
     protected $table = 'withdraw_money';
-    protected $guarded = [];
+    public $timestamps = true;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    protected $fillable = ['filename', 'title', 'logo'];
 }

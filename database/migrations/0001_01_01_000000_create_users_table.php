@@ -34,7 +34,7 @@ return new class extends Migration
             'phone' => '0123456789',
             'status' => 1,
             'role' => 1,
-            'password' => Hash::make('recharge@1234'),
+            'password' => Hash::make('Recharge@1234'),
         ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

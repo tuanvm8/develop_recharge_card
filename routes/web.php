@@ -41,9 +41,6 @@ Route::group(['prefix' => 'recharge-card-admin', 'as' => 'admin.'], function () 
             Route::post('xoa/{id}', 'destroy')->name('delete');
             Route::post('trang-thai/{id}', 'postStatus')->name('status');
         });
-        Route::controller(WithdrawalController::class)->prefix('withdrawal')->name('withdrawal.')->group(function () {
-            Route::get('/', 'index')->name('index');
-        });
     });
 });
 
@@ -64,20 +61,16 @@ Route::controller(UserProductController::class)->group(function(){
     Route::get('/data-card', 'dataCard')->name('dataCard');
 
     // mua thẻ gamegame
-    Route::post('/payment', 'paymentVNPAY')->name('payment');
-    Route::get('/return-vnpay', 'returnVNPAY')->name('return.vnpay');
+    Route::get('/payment', 'showPaymentPage')->name('payment');
 
     // mua thẻ điện thoại
-    Route::post('/payment-phone', 'paymentPhoneVNPAY')->name('payment.phone');
-    Route::get('/return-phone-vnpay', 'returnPhoneVNPAY')->name('return.phone.vnpay');
+    Route::get('/payment-phone', 'paymentPhoneVNPAY')->name('payment.phone');
 
     // nạp thẻ điện thoại
-    Route::post('/payment-loaded-phone', 'paymentLoadedPhoneVNPAY')->name('payment.loaded.phone');
-    Route::get('/return-loaded-phone-vnpay', 'returnLoadedPhoneVNPAY')->name('return.loaded.phone.vnpay');
+    Route::get('/payment-loaded-phone', 'paymentLoadedPhoneVNPAY')->name('payment.loaded.phone');
 
     // mua thẻ data
-    Route::post('/payment-data', 'paymentDataVNPAY')->name('payment.data');
-    Route::get('/return-data-vnpay', 'returnDataVNPAY')->name('return.data.vnpay');
+    Route::get('/payment-data', 'paymentDataVNPAY')->name('payment.data');
 });
 
 Route::controller(UserClient::class)->group(function(){

@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('withdraw_money', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();   
-            $table->string('content')->index();
-            $table->integer('status')->default(1)->index(); 
-            $table->decimal('total', 10, 2)->index();  // TỔng tiền
+            $table->string('title'); 
+            $table->string('filename');
+            $table->string('logo');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('withdraw_money');
     }
 };

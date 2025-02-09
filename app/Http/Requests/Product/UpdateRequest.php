@@ -22,26 +22,30 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'date_product' => 'required',
-            'url' => 'required',
-            'videoId' => 'required',
-            'image' =>  'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'title' => 'required|string|max:255',
+            'qr_image' => 'nullable|sometimes|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+
+
         ];
     }
 
+    /**
+     * Tùy chỉnh thông báo lỗi.
+     */
     public function messages(): array
     {
         return [
-            'title.required' => 'Tên sản phẩm không được để trống.',
-            'title.max' => 'Tên sản phẩm không được vượt quá :max ký tự.',
-            'date_product.required' => 'Ngày tạo không được để trống.',
-            'url.required' => 'Link youtube không được để trống.',
-            'videoId.required' => 'Video ID không được để trống.',
-            'image.nullable' => 'Ảnh không được để trống.',
-            'image.max' => 'Kích thước hình ảnh không được vượt quá 2048 KB.',
-            'image.mimes' => 'Ảnh không đúng định dạng, chỉ chấp nhận các định dạng jpeg, png, jpg, gif.',
-            'image.image' => 'Tệp tải lên phải là một hình ảnh.',
+            'title.required' => 'Tiêu đề là bắt buộc.',
+            'title.string' => 'Tiêu đề phải là một chuỗi.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'qr_image.image' => 'Ảnh QR phải là một tệp hình ảnh.',
+            'qr_image.mimes' => 'Ảnh QR chỉ được có định dạng jpeg, png, jpg, gif, svg.',
+            'qr_image.max' => 'Ảnh QR không được vượt quá 2MB.',
+            'logo.image' => 'Logo phải là một tệp hình ảnh.',
+            'logo.mimes' => 'Ảnh Logo chỉ được có định dạng jpeg, png, jpg, gif, svg.',
+            'logo.max' => 'Ảnh Logo không được vượt quá 2MB.',
         ];
     }
 }

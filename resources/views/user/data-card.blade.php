@@ -59,21 +59,47 @@
                     </div>
             </div>
             <div class="col-md-4">
-                {{-- <h2 class="fw-semibold">Thanh toán</h2>
-                <h5 class="card fw-normal p-2">Hình thức thanh toàn</h5> --}}
-                {{-- <div class="payment-method mb-3">
+                <h2 class="fw-semibold">Thanh toán</h2>
+                <h5 class="card fw-normal p-2">Hình thức thanh toàn</h5>
+                <div class="payment-method mb-3">
                     <div class="row p-2">
-                        <div class="col-4">
-                            <img alt="VNPay logo" src="/image/vnpay-qrcode-1.png" width="120" />
+                        <div class="col-4" id="selectedBankLogo">
+                            <img alt="VNPay logo" src="{{ asset('asset/images/vnpay-qrcode-1.png') }}" width="120" />
                         </div>
                         <div class="col-4">
                             <p class="fw-normal fs-6">Thanh toán quét mã VNPAYQR</p>
                         </div>
-                        <div class="col-4">
-                            <a class="text-decoration-none" href="#"> Thay đổi </a>
+                        <div class="col-4 text-end">
+                            <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#paymentModal">Thay đổi</a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
+                <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="paymentModalLabel">Thay đổi kênh thanh toán</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex flex-wrap p-2 justify-content-center">
+                                    @foreach ($banks as $bank)
+                                        <div class="me-3 mb-3">
+                                            <img class="custom-logo" 
+                                                src="{{ asset('asset/logo/' . $bank->logo) }}"
+                                                data-bank="{{ $bank->title }}" 
+                                                data-id="{{ $bank->id }}" 
+                                                style="height: 75px;" />
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tiếp tục</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h5 class="card fw-normal p-2">Chi tiết giao dịch</h5>
                 <p class="text-danger p-2">
                     Quý khách kiểm tra và cảnh giác không thanh toán hộ, hoặc cung cấp
@@ -121,6 +147,8 @@
         </div>
     </div>
     <script>
+            let selectedBankId = null;
+            let selectedBank = null;
         // Giá cho từng loại thẻ
         document.addEventListener("DOMContentLoaded", () => {
             const providers = document.querySelectorAll(".provider");
@@ -536,15 +564,53 @@
                     decreaseButton.disabled = false;
                 }
             });
+            const logos = document.querySelectorAll(".custom-logo");
+            const btnContinue = document.querySelector("#paymentModal .btn-primary");
+
+            const selectedBankLogo = document.querySelector("#selectedBankLogo");
+
+            logos.forEach(logo => {
+                logo.addEventListener("click", function () {
+                    logos.forEach(item => item.classList.remove("active"));
+                    this.classList.add("active");
+
+                    selectedBank = this.getAttribute("data-bank");
+                    selectedBankId = this.getAttribute("data-id");
+                    console.log("Ngân hàng được chọn:", selectedBank);
+                });
+            });
+
+            btnContinue.addEventListener("click", function () {
+                if (selectedBank) {
+                    const selectedLogo = document.querySelector(`.custom-logo[data-bank="${selectedBank}"]`);
+                    if (selectedLogo) {
+                        const newImgSrc = selectedLogo.getAttribute("src");
+                        const paymentImage = document.querySelector(".payment-method img");
+                        paymentImage.setAttribute("src", newImgSrc);
+                        paymentImage.classList.add("active");
+                    }
+                }
+            });
+
+            selectedBankLogo.addEventListener("click", function () {
+                selectedBankLogo.classList.toggle("active");
+            });
         });
-        const isLoggedIn = false;
         document.getElementById('pay-button').addEventListener('click', function() {
+            const activeProvider = document.querySelector(".provider.active");
+            if (!activeProvider) {
+                alert("Bạn cần chọn nhà cung cấp trước khi thanh toán!");
+                return;
+            }
+            if (!selectedBankId || selectedBankId === "null") {
+                alert("Bạn cần chọn ngân hàng trước khi thanh toán!");
+                return;
+            }
             const emailInput = document.getElementById('email-input');
             const emailError = document.getElementById('email-error');
             const emailValue = emailInput.value.trim();
 
-            const activeProvider = document.querySelector(".provider.active");
-            const providerValue = activeProvider ? activeProvider.getAttribute("data-provider") : '';
+            const providerValue = activeProvider.getAttribute("data-provider");
 
             const activeCard = document.querySelector(".provider2.active");
             const cardValue = activeCard ? activeCard.getAttribute("data-listed-price") : '';
@@ -575,16 +641,10 @@
 
             emailError.style.display = "none"; // Ẩn lỗi nếu nhập đúng
             emailInput.classList.remove('is-invalid');
-            // Kiểm tra đăng nhập
-            if (!isLoggedIn) {
-               
-                alert("Bạn phải đăng ký tài khoản để thanh toán!");
-                return;
-            }
 
             // Tạo một form ẩn
             const form = document.createElement('form');
-            form.method = 'POST';
+            form.method = 'GET';
             form.action = '/payment-data';
 
             // Thêm CSRF token
@@ -605,7 +665,8 @@
                 nameCard: nameCard,
                 quantity: quantity,
                 cardValue: cardValue.replace(/[^\d.-]/g, ''),
-                totalAmount: totalAmount.replace(/[^\d.-]/g, '')
+                totalAmount: totalAmount.replace(/[^\d.-]/g, ''),
+                selectedBankId: selectedBankId
             };
 
             for (const key in requestData) {
@@ -624,6 +685,22 @@
     <style>
         .is-invalid {
             border: 1px solid red !important;
+        }
+        .custom-logo {
+            cursor: pointer;
+            width: 150px;
+            height: 80px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-logo.active {
+            border: 4px solid #277de4;
         }
     </style>
 @endsection

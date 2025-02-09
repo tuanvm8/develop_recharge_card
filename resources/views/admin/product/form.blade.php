@@ -10,7 +10,7 @@
                             <a href="#" class="text-decoration-none">Trang chủ </a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="{{ route('admin.product.index') }}" class="text-decoration-none">Danh sách sản phẩm</a>
+                            <a href="{{ route('admin.product.index') }}" class="text-decoration-none">Danh sách mã QR</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             {{ $isUpdate ? 'Cập nhập' : 'Tạo mới' }}
@@ -23,7 +23,7 @@
     <div class="bg-white mx-3 p-3 shadow-sm">
         @include('admin.core.alert')
         <div class="d-flex justify-content-between mb-3">
-            <h1 class="fs-3 m-0">{{ $isUpdate ? 'Cập nhập' : 'Tạo mới' }} sản phẩm</h1>
+            <h1 class="fs-3 m-0">{{ $isUpdate ? 'Cập nhập' : 'Tạo mới' }} Mã QR</h1>
             <a href="{{ route('admin.product.index') }}" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                     class="bi bi-list-ol" viewBox="0 0 16 16">
@@ -42,76 +42,61 @@
                 @csrf
                 <div class="row">
                     <div class="col-6">
-                        <label for="title" class="form-label">Tên sản phẩm<span class="text-danger">*</span></label>
+                        <label for="title" class="form-label">Tên ngân hàng<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="title" name="title"
                             value="{{ old('title') ?? (isset($product) ? $product->title : '') }}">
                         <p class="help is-danger text-danger name-cate">{{ $errors->first('title') }}</p>
                     </div>
-
-                    <div class="col-6">
-                        <label for="url" class="form-label">Link youtube<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="url" name="url"
-                            value="{{ old('url') ?? (isset($product) ? $product->url : '') }}">
-                        <p class="help is-danger text-danger name-cate">{{ $errors->first('url') }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <label for="videoId" class="form-label">Video ID<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="videoId" name="videoId"
-                            value="{{ old('videoId') ?? (isset($product) ? $product->videoId : '') }}">
-                        <p class="help is-danger text-danger name-cate">{{ $errors->first('videoId') }}</p>
-                    </div>
-                    <div class="col-6">
-                        <label for="date_product" class="form-label">Ngày tạo<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="datepicker" name="date_product"
-                            value="{{ old('date_product') ?? (isset($product) ? $product->date_product : '') }}" readonly>
-                        <p class="help is-danger text-danger name-cate">{{ $errors->first('date_product') }}</p>
-                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">
-                        <label for="image" class="form-label">Ảnh <span class="text-danger">*</span></label>
+                        <label for="logo" class="form-label">Ảnh Logo<span class="text-danger">*</span></label>
                         <div class="d-flex">
                             <div class="position-relative border rounded me-3">
-                                @if (isset($product) && $product->image)
-                                    <img src="{{ $product->image }}" class="add-image" id="imgPreview"
-                                        style="max-width: 350px">
-                                    <input type="hidden" id="imageCheck" name="imageCheck" value="1">
-                                @else
-                                    <img src="{{ asset('asset/images/test.jpg') }}" class="add-image rounded"
-                                        id="imgPreview" style="max-width: 350px">
+                                @if (isset($product) && $product->logo)
+                                    <!-- Hiển thị ảnh logo nếu tồn tại -->
+                                    <img src="{{ isset($product) && $product->logo ? asset('asset/logo/' . $product->logo) : asset('asset/images/test.jpg') }}" 
+                                        class="add-image" id="logoPreview" style="max-width: 250px">
+                                    <input type="hidden" id="logoCheck" name="old_logo" value="{{ $product->logo }}">
+                                    @else
+                                    <!-- Hiển thị ảnh mặc định nếu không có ảnh -->
+                                    <img src="{{ asset('asset/images/test.jpg') }}" class="add-image rounded" id="logoPreview" style="max-width: 250px">
                                 @endif
-                                <input type='button' id='remove' value='x'
-                                    class="btn btn-light position-absolute top-0 end-0 mt-2 me-2" />
+                                <input type='button' id='remove-logo' value='x' class="btn btn-light position-absolute top-0 end-0 mt-2 me-2" />
                             </div>
                             <div class="align-self-start input-group mb-3">
-                                <input type="file" class="form-control files images" name="image" id="imgInp">
-                                <label class="input-group-text" for="imgInp">Upload</label>
+                                <input type="file" class="form-control files images" name="logo" id="imgInp">
+                                <label class="input-group-text" for="imgInp">Upload Logo</label>
                             </div>
                         </div>
-                        <p class="help is-danger text-danger">{{ $errors->first('image') }}</p>
+                        <p class="help is-danger text-danger">{{ $errors->first('logo') }}</p>
                     </div>
                 </div>
+
                 <div class="row mb-3">
-                    <div class="col-6">
-                        <label for="status" class="form-label">Trạng thái<span class="text-danger">*</span></label>
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="active"
-                                    value="1"
-                                    {{ old('status') ? (old('status') == 1 ? 'checked' : '') : ($isUpdate ? ($product->status == 1 ? 'checked' : '') : 'checked') }}>
-                                <label class="form-check-label" for="active">Hoạt động</label>
+                    <div class="col-12">
+                        <label for="qr_image" class="form-label">Ảnh Mã QR<span class="text-danger">*</span></label>
+                        <div class="d-flex">
+                            <div class="position-relative border rounded me-3">
+                                @if (isset($product) && $product->filename)
+                                    <!-- Hiển thị ảnh mã QR nếu tồn tại -->
+                                    <img src="{{ asset('asset/qr/' . $product->filename) }}" class="add-image" id="qrPreview" style="max-width: 250px">
+                                    <input type="hidden" id="qrCheck" name="old_filename" value="{{ $product->filename }}">
+                                @else
+                                    <!-- Hiển thị ảnh mặc định nếu không có ảnh -->
+                                    <img src="{{ asset('asset/images/test.jpg') }}" class="add-image rounded" id="qrPreview" style="max-width: 250px">
+                                @endif
+                                <input type='button' id='remove-qr' value='x' class="btn btn-light position-absolute top-0 end-0 mt-2 me-2" />
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="inactive"
-                                    value="2"
-                                    {{ old('status') ? (old('status') == 2 ? 'checked' : '') : ($isUpdate ? ($product->status == 2 ? 'checked' : '') : '') }}>
-                                <label class="form-check-label" for="inactive">Tạm khóa</label>
+                            <div class="align-self-start input-group mb-3">
+                                <input type="file" class="form-control files images" name="qr_image" id="qrImgInp">
+                                <label class="input-group-text" for="qrImgInp">Upload QR Image</label>
                             </div>
                         </div>
+                        <p class="help is-danger text-danger">{{ $errors->first('qr_image') }}</p>
                     </div>
                 </div>
+                           
                 <div class="text-end">
                     <button type="submit" id="btn-button"
                         class="btn btn-{{ isset($product) ? 'primary' : 'success' }}">
@@ -161,23 +146,27 @@
         <script src="{{ asset('asset/js/delete.js') }}"></script>
     @endisset
     <script>
-        $('#datepicker').datepicker({
-            dateFormat: "yy-mm-dd",
-            autoclose: true,
-            beforeShowDay: function(date) {
-                var today = moment().startOf('day');
-                var selectedDate = moment(date);
-                // Set time to midnight to compare dates
-                if (selectedDate.isBefore(today)) {
-                    return [false, '', 'Dates before today are disabled'];
+        // Xử lý xem trước ảnh logo
+        document.getElementById('imgInp').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('logoPreview').src = e.target.result;
                 }
+                reader.readAsDataURL(file);
+            }
+        });
 
-                // Disable today
-                if (selectedDate.isSame(today, 'day')) {
-                    return [false, '', 'Today is disabled'];
+        // Xử lý xem trước ảnh mã QR
+        document.getElementById('qrImgInp').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('qrPreview').src = e.target.result;
                 }
-
-                return [true, '', ''];
+                reader.readAsDataURL(file);
             }
         });
 
